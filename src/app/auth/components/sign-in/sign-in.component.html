@@ -1,0 +1,146 @@
+<div class="auth-container">
+  <!-- Left Side - Sign In Form -->
+  <div class="auth-left">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="brand-title">EduInnovate</h1>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #signInForm="ngForm" class="auth-form">
+        <div class="form-group">
+          <label for="email" class="form-label">Email address*</label>
+          <div class="input-wrapper">
+            <input 
+              type="email" 
+              id="email" 
+              name="email"
+              [(ngModel)]="email" 
+              required 
+              email
+              #emailInput="ngModel"
+              class="form-input"
+              [class.error]="emailInput.invalid && emailInput.touched"
+              placeholder="Enter your email">
+          </div>
+          <div *ngIf="emailInput.invalid && emailInput.touched" class="error-message">
+            <span *ngIf="emailInput.errors?.['required']">Email address is required</span>
+            <span *ngIf="emailInput.errors?.['email']">Please enter a valid email</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Password*</label>
+          <div class="input-wrapper">
+            <input 
+              [type]="showPassword ? 'text' : 'password'"
+              id="password" 
+              name="password"
+              [(ngModel)]="password" 
+              required 
+              minlength="6"
+              #passwordInput="ngModel"
+              class="form-input"
+              [class.error]="passwordInput.invalid && passwordInput.touched"
+              placeholder="Enter your password">
+            <button 
+              type="button" 
+              class="password-toggle"
+              (click)="togglePassword()">
+              <svg *ngIf="!showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg *ngIf="showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="m1 1 22 22"></path>
+                <path d="M8.5 17.5A10 10 0 0 1 1 12s4-8 11-8a13.3 13.3 0 0 1 5 2"></path>
+              </svg>
+            </button>
+          </div>
+          <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error-message">
+            <span *ngIf="passwordInput.errors?.['required']">Password is required</span>
+            <span *ngIf="passwordInput.errors?.['minlength']">Password must be at least 6 characters</span>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe">
+            <span class="checkmark"></span>
+            Remember me
+          </label>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-banner">
+          {{ errorMessage }}
+        </div>
+
+        <button 
+          type="submit" 
+          class="btn-primary" 
+          [disabled]="signInForm.invalid || isLoading">
+          <span *ngIf="isLoading" class="loading-spinner"></span>
+          <span *ngIf="!isLoading">Sign in</span>
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <div class="support-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          <span>Support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side - Welcome Content -->
+  <div class="auth-right">
+    <div class="welcome-content">
+      <div class="welcome-header">
+        <h1 class="welcome-title">
+          Welcome to<br>
+          <span class="brand-gradient">EduInnovate</span>
+        </h1>
+      </div>
+      
+      <div class="welcome-description">
+        <p>
+          Your trusted partner in seamless education management. Connect students 
+          with qualified teachers, create personalized learning experiences, and 
+          manage educational journeys effortlessly—all in one place. Experience 
+          the future of education solutions with EduInnovate.
+        </p>
+      </div>
+
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon">✨</div>
+          <span>Personalized Learning Experiences</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">👨‍🏫</div>
+          <span>Connect with Qualified Teachers</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📚</div>
+          <span>Comprehensive Course Management</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">📊</div>
+          <span>Track Progress & Analytics</span>
+        </div>
+      </div>
+
+      <div class="cta-section">
+        <p>Don't have an account?</p>
+        <button type="button" class="btn-signup" (click)="navigateToSignUp()">
+          Create Account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

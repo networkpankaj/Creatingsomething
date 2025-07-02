@@ -1,0 +1,458 @@
+/* Modern Sign-Up Component Styles */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Background Effects */
+.auth-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  filter: blur(40px);
+  animation: float 20s infinite linear;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: -150px;
+  right: -150px;
+  animation-delay: 0s;
+}
+
+.shape-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -200px;
+  left: -200px;
+  animation-delay: -10s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+/* Main Card */
+.auth-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 24px;
+  box-shadow: 
+    0 32px 64px rgba(0, 0, 0, 0.12),
+    0 16px 32px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 900px;
+  padding: 40px;
+  position: relative;
+  z-index: 2;
+  margin: auto;
+}
+
+/* Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.brand-title {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.025em;
+}
+
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.025em;
+}
+
+.auth-subtitle {
+  color: #718096;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Registration Options */
+.registration-links {
+  margin-top: 20px;
+}
+
+.registration-options h3 {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 30px;
+  letter-spacing: -0.025em;
+}
+
+.registration-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.registration-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 24px;
+  border: 2px solid #e2e8f0;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.registration-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+}
+
+.parent-card::before {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+}
+
+.teacher-card::before {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%);
+}
+
+.registration-card:hover::before {
+  opacity: 1;
+}
+
+.registration-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.06);
+}
+
+.parent-card:hover {
+  border-color: #667eea;
+}
+
+.teacher-card:hover {
+  border-color: #8b5cf6;
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
+.registration-card h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: #1a202c;
+  position: relative;
+  z-index: 2;
+  letter-spacing: -0.025em;
+}
+
+.registration-card p {
+  font-size: 0.95rem;
+  color: #718096;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-register-parent,
+.btn-register-teacher {
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  letter-spacing: 0.025em;
+  text-transform: none;
+}
+
+.btn-register-parent {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-register-parent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-register-teacher {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.btn-register-teacher:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
+}
+
+.btn-register-parent:active,
+.btn-register-teacher:active {
+  transform: translateY(0);
+}
+
+/* Footer */
+.auth-footer {
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.auth-footer p {
+  color: #718096;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 0;
+  font-size: inherit;
+}
+
+.link-button:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 16px;
+  }
+  
+  .auth-card {
+    max-width: 100%;
+    padding: 32px 24px;
+  }
+  
+  .brand-title {
+    font-size: 1.75rem;
+  }
+  
+  .auth-title {
+    font-size: 1.5rem;
+  }
+  
+  .auth-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .registration-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .registration-card {
+    padding: 28px 20px;
+  }
+  
+  .card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+  
+  .registration-card h4 {
+    font-size: 1.1rem;
+  }
+  
+  .registration-card p {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+  
+  .btn-register-parent,
+  .btn-register-teacher {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 24px 20px;
+  }
+  
+  .brand-title {
+    font-size: 1.5rem;
+  }
+  
+  .auth-title {
+    font-size: 1.3rem;
+  }
+  
+  .registration-options h3 {
+    font-size: 1.2rem;
+    margin-bottom: 24px;
+  }
+  
+  .registration-card {
+    padding: 24px 16px;
+  }
+  
+  .card-icon {
+    font-size: 2.2rem;
+  }
+  
+  .registration-card h4 {
+    font-size: 1rem;
+  }
+  
+  .registration-card p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .auth-container {
+    padding: 12px;
+  }
+  
+  .auth-card {
+    padding: 20px 16px;
+  }
+  
+  .registration-card {
+    padding: 20px 12px;
+  }
+}
+
+/* Loading and Interaction States */
+.registration-card:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.btn-register-parent:focus,
+.btn-register-teacher:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .registration-card,
+  .btn-register-parent,
+  .btn-register-teacher,
+  .shape {
+    animation: none;
+    transition: none;
+  }
+  
+  .registration-card:hover {
+    transform: none;
+  }
+  
+  .btn-register-parent:hover,
+  .btn-register-teacher:hover {
+    transform: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .auth-card {
+    background: rgba(26, 32, 44, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .auth-title {
+    color: white;
+  }
+  
+  .auth-subtitle {
+    color: #a0aec0;
+  }
+  
+  .registration-options h3 {
+    color: white;
+  }
+  
+  .registration-card {
+    background: rgba(45, 55, 72, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .registration-card h4 {
+    color: white;
+  }
+  
+  .registration-card p {
+    color: #a0aec0;
+  }
+  
+  .auth-footer {
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .auth-footer p {
+    color: #a0aec0;
+  }
+}

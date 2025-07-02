@@ -1,0 +1,184 @@
+<div class="parent-profiles-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="branding">
+        <div class="logo">
+          <div class="logo-icon">✈️</div>
+          <span class="logo-text">EduTeacher Portal</span>
+        </div>
+        <div class="user-section">
+          <span class="welcome-text">Welcome, Dr. Robert Chen</span>
+          <div class="user-dropdown">
+            <div class="user-avatar">RC</div>
+            <div class="dropdown-menu">
+              <a href="#" class="dropdown-item">Your Profile</a>
+              <a href="#" class="dropdown-item">Settings</a>
+              <a href="#" class="dropdown-item">Sign out</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-header">
+      <h1 class="page-title">Parent Profiles</h1>
+      <p class="page-subtitle">View and explore parent profiles based on subject needs and location</p>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <!-- Subject Filters -->
+      <div class="filter-group">
+        <h3 class="filter-title">Filter by Subject Need</h3>
+        <div class="filter-tags">
+          <button 
+            *ngFor="let subject of subjects"
+            class="filter-tag"
+            [class.active]="isSubjectSelected(subject)"
+            (click)="toggleSubject(subject)">
+            {{ subject }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Location Filters -->
+      <div class="filter-group">
+        <h3 class="filter-title">Filter by Location</h3>
+        <div class="filter-tags">
+          <button 
+            *ngFor="let location of locations"
+            class="filter-tag"
+            [class.active]="isLocationSelected(location)"
+            (click)="toggleLocation(location)">
+            {{ location }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-group">
+        <h3 class="filter-title">Search</h3>
+        <div class="search-input-container">
+          <input 
+            type="text" 
+            class="search-input"
+            placeholder="Search by name or keyword"
+            [(ngModel)]="searchTerm">
+          <div class="search-icon">🔍</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add this to your parent-profiles.html after the filters -->
+    <div class="content-area">
+      
+      <!-- Empty State -->
+      <div *ngIf="parents.length === 0" class="empty-state">
+        <div class="empty-icon">📝</div>
+        <h3>No Parent Profiles Found</h3>
+        <p>There are no registered parents yet. Complete a parent registration to see profiles here.</p>
+        <button class="btn-primary" (click)="goToRegistration()">
+          Register as Parent
+        </button>
+        <button class="btn-secondary" (click)="reloadData()">
+          Reload Data
+        </button>
+      </div>
+
+      <!-- Parents Grid -->
+      <div *ngIf="parents.length > 0" class="parents-grid">
+        <!-- Show filtered results count -->
+        <div class="results-info">
+          <p>Showing {{ filteredParents.length }} of {{ parents.length }} parents</p>
+        </div>
+        
+        <!-- Existing parent cards -->
+        <div *ngFor="let parent of filteredParents" class="parent-card">
+          
+          <!-- Priority Badge -->
+          <div class="priority-badge" [class]="getPriorityClass(parent.priority)">
+            <span class="priority-icon">📍</span>
+            <span class="priority-text">{{ parent.priority }}</span>
+          </div>
+
+          <!-- Parent Avatar -->
+          <div class="parent-avatar" [style.background-color]="parent.color">
+            <span class="avatar-initials">{{ parent.initials }}</span>
+          </div>
+
+          <!-- Parent Info -->
+          <div class="parent-info">
+            <h3 class="parent-name">{{ parent.firstName }} {{ parent.lastName }}</h3>
+            <p class="parent-location">📍 {{ parent.location }}</p>
+
+            <!-- Rating -->
+            <div class="rating">
+              <div class="stars">
+                <span 
+                  *ngFor="let filled of getStarArray(parent.rating)"
+                  class="star"
+                  [class.filled]="filled">
+                  ⭐
+                </span>
+              </div>
+              <span class="rating-text">{{ parent.rating }}/{{ parent.totalRatings }}</span>
+            </div>
+
+            <!-- Subject Needs -->
+            <div class="subject-needs">
+              <h4 class="section-title">Subject Needs</h4>
+              <div class="subject-tags">
+                <span 
+                  *ngFor="let subject of parent.subjectNeeds"
+                  class="subject-tag">
+                  {{ subject }}
+                </span>
+              </div>
+            </div>
+
+            <!-- Students -->
+            <div class="students-section">
+              <h4 class="section-title">Students</h4>
+              <div class="students-list">
+                <div 
+                  *ngFor="let student of parent.students"
+                  class="student-item">
+                  {{ student.name }} ({{ student.grade }})
+                </div>
+              </div>
+            </div>
+
+            <!-- View Profile Button -->
+            <button 
+              class="view-profile-btn"
+              (click)="viewProfile(parent.id)">
+              View Full Profile
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Debug & Testing Section -->
+    <!-- <div class="debug-section">
+      <h3>Debug & Testing</h3>
+      <button (click)="addSampleData()" class="btn">Add Sample Data</button>
+      <button (click)="refreshData()" class="btn">Refresh</button>
+      <button (click)="clearAllData()" class="btn btn-danger">Clear All</button>
+      <button (click)="exportData()" class="btn">Export Data</button>
+      <button (click)="getStats()" class="btn">Show Stats</button>
+      <p>Total Parents: {{ parents.length }}</p>
+    </div>
+  </div> -->
+
+<app-parent-profile-modal
+  [parent]="selectedParent"
+  [isVisible]="showModal"
+  (closeModal)="closeModal()">
+</app-parent-profile-modal>
+</div>

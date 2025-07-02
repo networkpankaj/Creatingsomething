@@ -1,0 +1,97 @@
+<div class="subject-teachers-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="branding">
+        <div class="logo">
+          <div class="logo-icon">✈️</div>
+          <span class="logo-text">EduParent Portal</span>
+        </div>
+        <div class="welcome">
+          <span class="welcome-text">Welcome, Sarah Johnson</span>
+          <div class="user-avatar">SJ</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-header">
+      <h1 class="page-title">Subject Teachers</h1>
+      <p class="page-subtitle">View and explore teacher profiles by subject</p>
+    </div>
+
+    <!-- Subject Filter Tabs -->
+    <div class="subject-tabs">
+      <button 
+        *ngFor="let subject of subjects"
+        class="subject-tab"
+        [class.active]="selectedSubject === subject"
+        (click)="selectSubject(subject)">
+        {{ subject }}
+      </button>
+    </div>
+
+    <!-- Teachers Grid -->
+    <div class="teachers-grid">
+      <div 
+        *ngFor="let teacher of filteredTeachers" 
+        class="teacher-card">
+        
+        <!-- Top Rated Badge -->
+        <div *ngIf="teacher.isTopRated" class="top-rated-badge">
+          <span class="badge-icon">⭐</span>
+          <span class="badge-text">Top Rated</span>
+        </div>
+
+        <!-- Teacher Avatar -->
+        <div class="teacher-avatar" [style.background-color]="teacher.color">
+          <span class="avatar-initials">{{ teacher.initials }}</span>
+        </div>
+
+        <!-- Teacher Info -->
+        <div class="teacher-info">
+          <h3 class="teacher-name">
+            Dr. {{ teacher.firstName }} {{ teacher.lastName }}
+          </h3>
+          <p class="teacher-subject">{{ teacher.subject }}</p>
+
+          <!-- Rating -->
+          <div class="rating">
+            <div class="stars">
+              <span 
+                *ngFor="let filled of getStarArray(teacher.rating)"
+                class="star"
+                [class.filled]="filled">
+                ⭐
+              </span>
+            </div>
+            <span class="rating-text">{{ teacher.rating }}/{{ teacher.totalRatings }}</span>
+          </div>
+
+          <!-- Experience and Classes -->
+          <div class="teacher-details">
+            <div class="detail-row">
+              <div class="detail-item">
+                <span class="detail-label">Experience</span>
+                <span class="detail-value">{{ getExperienceText(teacher.experience) }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Classes</span>
+                <span class="detail-value">{{ getClassesText(teacher.classes) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- View Profile Button -->
+          <button 
+            class="view-profile-btn"
+            (click)="viewProfile(teacher.id)">
+            View Full Profile
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

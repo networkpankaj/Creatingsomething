@@ -1,0 +1,47 @@
+<div class="auth-container">
+  <div class="auth-background">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+  
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="brand-title">EduInnovate</h1>
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-subtitle">Choose how you want to join our platform</p>
+    </div>
+
+    <!-- Join as Section -->
+    <div class="registration-links">
+      <div class="registration-options">
+        <h3>Join as:</h3>
+        
+        <div class="registration-cards">
+          <!-- Parent Registration Card -->
+          <a routerLink="/parent-registration" class="registration-card parent-card">
+            <div class="card-icon">👨‍👩‍👧‍👦</div>
+            <h4>Parent</h4>
+            <p>Find qualified teachers for your children's educational needs</p>
+            <button type="button" class="btn-register-parent">Register as Parent</button>
+          </a>
+          
+          <!-- Teacher Registration Card -->
+          <a routerLink="/teacher-registration" class="registration-card teacher-card">
+            <div class="card-icon">👩‍🏫</div>
+            <h4>Teacher</h4>
+            <p>Share your expertise and teach students online</p>
+            <button type="button" class="btn-register-teacher">Register as Teacher</button>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-footer">
+      <p>Already have an account? 
+        <button type="button" class="link-button" (click)="navigateToSignIn()">
+          Sign In
+        </button>
+      </p>
+    </div>
+  </div>
+</div>

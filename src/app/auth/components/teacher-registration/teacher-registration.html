@@ -1,0 +1,554 @@
+<div class="registration-container">
+  <div class="registration-card">
+    <!-- Header with progress -->
+    <div class="registration-header">
+      <h1 class="title">Teacher Registration</h1>
+      <p class="subtitle">Join our teaching community</p>
+      
+      <!-- Progress bar -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="(currentStep / totalSteps) * 100"></div>
+        </div>
+        <span class="progress-text">{{ currentStep }}/{{ totalSteps }}</span>
+      </div>
+      
+      <!-- Step indicators -->
+      <div class="step-indicators">
+        <div class="step-item" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+          <div class="step-circle">
+            <span *ngIf="currentStep > 1">✓</span>
+            <span *ngIf="currentStep <= 1">1</span>
+          </div>
+          <span class="step-label">Personal</span>
+        </div>
+        
+        <div class="step-item" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+          <div class="step-circle">
+            <span *ngIf="currentStep > 2">✓</span>
+            <span *ngIf="currentStep <= 2">2</span>
+          </div>
+          <span class="step-label">Experience</span>
+        </div>
+        
+        <div class="step-item" [class.active]="currentStep >= 3" [class.completed]="currentStep > 3">
+          <div class="step-circle">
+            <span *ngIf="currentStep > 3">✓</span>
+            <span *ngIf="currentStep <= 3">3</span>
+          </div>
+          <span class="step-label">Subjects</span>
+        </div>
+        
+        <div class="step-item" [class.active]="currentStep >= 4">
+          <div class="step-circle">
+            <span>4</span>
+          </div>
+          <span class="step-label">Payment</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form content -->
+    <div class="form-content">
+      <h2 class="form-title">{{ getStepTitle() }}</h2>
+      
+      <!-- Step 1: Personal Information -->
+      <form *ngIf="currentStep === 1" class="step-form">
+        <div class="form-group">
+          <label class="form-label">First Name*</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.firstName"
+            name="firstName"
+            placeholder="Enter your first name"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Middle Name</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.middleName"
+            name="middleName"
+            placeholder="Enter your middle name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Last Name*</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.lastName"
+            name="lastName"
+            placeholder="Enter your last name"
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Email Address*</label>
+          <input 
+            type="email" 
+            class="form-input" 
+            [(ngModel)]="formData.email"
+            name="email"
+            placeholder="Enter your email address"
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Phone Number*</label>
+          <input 
+            type="tel" 
+            class="form-input" 
+            [(ngModel)]="formData.phone"
+            name="phone"
+            placeholder="Enter your phone number"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Profile Photo</label>
+          <div class="photo-upload">
+            <div class="upload-placeholder">
+              <div class="upload-icon">👤</div>
+              <button type="button" class="btn-upload" (click)="fileInput.click()">
+                Upload Photo
+              </button>
+              <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" style="display: none;">
+            </div>
+            <p class="upload-note">Maximum size: 5MB. Recommended: square image</p>
+          </div>
+        </div>
+        
+        <div class="form-actions single">
+          <button type="button" class="btn-continue" (click)="nextStep()">
+            Continue
+          </button>
+        </div>
+      </form>
+
+      <!-- Step 2: Professional Experience -->
+      <form *ngIf="currentStep === 2" class="step-form">
+        <div class="form-group">
+          <label class="form-label">Years of Teaching Experience*</label>
+          <input 
+            type="number" 
+            class="form-input" 
+            [(ngModel)]="formData.yearsOfExperience"
+            name="yearsOfExperience"
+            placeholder="e.g., 5"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Current Occupation*</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.currentOccupation"
+            name="currentOccupation"
+            placeholder="e.g., High School Teacher, Private Tutor"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Last Class Taught</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.lastClassTaught"
+            name="lastClassTaught"
+            placeholder="e.g., Grade 10 Mathematics">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Highest Education*</label>
+          <select 
+            class="form-input" 
+            [(ngModel)]="formData.highestEducation"
+            name="highestEducation"
+            required>
+            <option value="">Select your highest education</option>
+            <option value="bachelors">Bachelor's Degree</option>
+            <option value="masters">Master's Degree</option>
+            <option value="phd">PhD</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Certifications</label>
+          <textarea 
+            class="form-textarea" 
+            [(ngModel)]="formData.certifications"
+            name="certifications"
+            placeholder="List any relevant certifications or qualifications"
+            rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Brief Bio*</label>
+          <textarea 
+            class="form-textarea" 
+            [(ngModel)]="formData.briefBio"
+            name="briefBio"
+            placeholder="Tell us about yourself and your teaching experience"
+            rows="4"
+            maxlength="500"
+            required></textarea>
+          <div class="character-count">{{ bioCharacterCount }}/500 characters</div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-back" (click)="previousStep()">
+            Back
+          </button>
+          <button type="button" class="btn-continue" (click)="nextStep()">
+            Continue
+          </button>
+        </div>
+      </form>
+
+      <!-- Step 3: Subject Expertise & Availability -->
+      <form *ngIf="currentStep === 3" class="step-form">
+        <div class="subjects-section">
+          <h3 class="section-title">Subject Expertise</h3>
+          <p class="section-subtitle">Select Subjects You Can Teach*</p>
+          
+          <div class="subjects-grid">
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.mathematics" name="mathematics">
+              <span class="checkmark"></span>
+              Mathematics
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.physics" name="physics">
+              <span class="checkmark"></span>
+              Physics
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.chemistry" name="chemistry">
+              <span class="checkmark"></span>
+              Chemistry
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.biology" name="biology">
+              <span class="checkmark"></span>
+              Biology
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.english" name="english">
+              <span class="checkmark"></span>
+              English
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.history" name="history">
+              <span class="checkmark"></span>
+              History
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.geography" name="geography">
+              <span class="checkmark"></span>
+              Geography
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.computerScience" name="computerScience">
+              <span class="checkmark"></span>
+              Computer Science
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.art" name="art">
+              <span class="checkmark"></span>
+              Art
+            </label>
+            
+            <label class="subject-item">
+              <input type="checkbox" [(ngModel)]="formData.subjects.music" name="music">
+              <span class="checkmark"></span>
+              Music
+            </label>
+          </div>
+
+          <div class="other-subjects">
+            <label class="form-label">Other Subjects</label>
+            <div class="input-with-button">
+              <input 
+                type="text" 
+                class="form-input" 
+                [(ngModel)]="formData.otherSubjects"
+                name="otherSubjects"
+                placeholder="Enter other subjects">
+              <button type="button" class="btn-add" (click)="addOtherSubject()">Add</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grade-levels-section">
+          <h3 class="section-title">Grade Levels You Can Teach*</h3>
+          
+          <div class="grade-levels-grid">
+            <label class="grade-item">
+              <input type="checkbox" [(ngModel)]="formData.gradeLevels.elementary" name="elementary">
+              <span class="checkmark"></span>
+              Elementary
+            </label>
+            
+            <label class="grade-item">
+              <input type="checkbox" [(ngModel)]="formData.gradeLevels.highSchool" name="highSchool">
+              <span class="checkmark"></span>
+              High School
+            </label>
+            
+            <label class="grade-item">
+              <input type="checkbox" [(ngModel)]="formData.gradeLevels.middleSchool" name="middleSchool">
+              <span class="checkmark"></span>
+              Middle School
+            </label>
+            
+            <label class="grade-item">
+              <input type="checkbox" [(ngModel)]="formData.gradeLevels.college" name="college">
+              <span class="checkmark"></span>
+              College
+            </label>
+          </div>
+        </div>
+
+        <div class="availability-section">
+          <h3 class="section-title">Available Time Slots*</h3>
+          <p class="section-subtitle">Select all time slots when you are available to teach</p>
+          
+          <div class="time-slots">
+            <div class="day-section">
+              <h4 class="day-title">Weekdays</h4>
+              <div class="time-grid">
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.morning" name="weekdayMorning">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Morning</span>
+                    <span class="time-range">8:00 AM - 12:00 PM</span>
+                  </div>
+                </label>
+                
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.afternoon" name="weekdayAfternoon">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Afternoon</span>
+                    <span class="time-range">12:00 PM - 4:00 PM</span>
+                  </div>
+                </label>
+                
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.evening" name="weekdayEvening">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Evening</span>
+                    <span class="time-range">4:00 PM - 8:00 PM</span>
+                  </div>
+                </label>
+                
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.night" name="weekdayNight">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Night</span>
+                    <span class="time-range">8:00 PM - 10:00 PM</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="day-section">
+              <h4 class="day-title">Weekends</h4>
+              <div class="time-grid">
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.morning" name="weekendMorning">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Morning</span>
+                    <span class="time-range">8:00 AM - 12:00 PM</span>
+                  </div>
+                </label>
+                
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.afternoon" name="weekendAfternoon">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Afternoon</span>
+                    <span class="time-range">12:00 PM - 4:00 PM</span>
+                  </div>
+                </label>
+                
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.evening" name="weekendEvening">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Evening</span>
+                    <span class="time-range">4:00 PM - 8:00 PM</span>
+                  </div>
+                </label>
+                
+                <label class="time-slot">
+                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.night" name="weekendNight">
+                  <span class="checkmark"></span>
+                  <div class="time-info">
+                    <span class="time-label">Night</span>
+                    <span class="time-range">8:00 PM - 10:00 PM</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-back" (click)="previousStep()">
+            Back
+          </button>
+          <button type="button" class="btn-continue" (click)="nextStep()">
+            Continue
+          </button>
+        </div>
+      </form>
+
+      <!-- Step 4: Payment Information -->
+      <form *ngIf="currentStep === 4" class="step-form">
+        <div class="rates-section">
+          <div class="form-group">
+            <label class="form-label">Hourly Rate (USD)*</label>
+            <div class="currency-input">
+              <span class="currency-symbol">$</span>
+              <input 
+                type="number" 
+                class="form-input currency" 
+                [(ngModel)]="formData.hourlyRate"
+                name="hourlyRate"
+                placeholder="25"
+                min="0"
+                step="0.01"
+                required>
+            </div>
+            <p class="rate-note">Set your hourly teaching rate</p>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Group Session Rate (USD)</label>
+            <div class="currency-input">
+              <span class="currency-symbol">$</span>
+              <input 
+                type="number" 
+                class="form-input currency" 
+                [(ngModel)]="formData.groupSessionRate"
+                name="groupSessionRate"
+                placeholder="15"
+                min="0"
+                step="0.01">
+            </div>
+            <p class="rate-note">Optional: Set a different rate for group sessions</p>
+          </div>
+        </div>
+
+        <div class="payment-methods-section">
+          <h3 class="section-title">Payment Methods You Accept*</h3>
+          
+          <div class="payment-grid">
+            <label class="payment-method-item">
+              <input type="checkbox" [(ngModel)]="formData.paymentMethods.directDeposit" name="directDeposit">
+              <span class="checkmark"></span>
+              Direct Deposit
+            </label>
+            
+            <label class="payment-method-item">
+              <input type="checkbox" [(ngModel)]="formData.paymentMethods.paypal" name="paypal">
+              <span class="checkmark"></span>
+              PayPal
+            </label>
+            
+            <label class="payment-method-item">
+              <input type="checkbox" [(ngModel)]="formData.paymentMethods.venmo" name="venmo">
+              <span class="checkmark"></span>
+              Venmo
+            </label>
+            
+            <label class="payment-method-item">
+              <input type="checkbox" [(ngModel)]="formData.paymentMethods.zelle" name="zelle">
+              <span class="checkmark"></span>
+              Zelle
+            </label>
+            
+            <label class="payment-method-item">
+              <input type="checkbox" [(ngModel)]="formData.paymentMethods.cash" name="cash">
+              <span class="checkmark"></span>
+              Cash
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Cancellation Policy*</label>
+          <select 
+            class="form-input" 
+            [(ngModel)]="formData.cancellationPolicy"
+            name="cancellationPolicy"
+            required>
+            <option value="">Select a policy</option>
+            <option value="24hours">24 hours notice required</option>
+            <option value="12hours">12 hours notice required</option>
+            <option value="flexible">Flexible cancellation</option>
+            <option value="strict">Strict - no refunds</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Additional Notes</label>
+          <textarea 
+            class="form-textarea" 
+            [(ngModel)]="formData.additionalNotes"
+            name="additionalNotes"
+            placeholder="Any additional information about your payment terms or availability"
+            rows="3"></textarea>
+        </div>
+
+        <div class="agreements-section">
+          <h3 class="section-title">Terms & Conditions</h3>
+          
+          <label class="agreement-item">
+            <input type="checkbox" [(ngModel)]="formData.agreeToTerms" name="agreeToTerms" required>
+            <span class="checkmark"></span>
+            I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+          </label>
+          
+          <label class="agreement-item">
+            <input type="checkbox" [(ngModel)]="formData.agreeToEmails" name="agreeToEmails">
+            <span class="checkmark"></span>
+            I would like to receive emails about teaching opportunities and platform updates
+          </label>
+        </div>
+        
+        <div class="form-actions-final">
+          <button type="button" class="btn-back" (click)="previousStep()">
+            Back
+          </button>
+          <button 
+            type="button" 
+            class="btn-complete" 
+            (click)="onSubmit()"
+            [disabled]="!formData.agreeToTerms">
+            Complete Registration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

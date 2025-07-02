@@ -1,0 +1,426 @@
+<div class="registration-container">
+  <div class="registration-card">
+    <!-- Header with progress -->
+    <div class="registration-header">
+      <h1 class="title">Parent Registration</h1>
+      <p class="subtitle">Complete your profile to get started</p>
+      
+      <!-- Progress bar -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="(currentStep / totalSteps) * 100"></div>
+        </div>
+        <span class="progress-text">Step {{ currentStep }}/{{ totalSteps }}</span>
+      </div>
+      
+      <!-- Step indicators -->
+      <div class="step-indicators">
+        <div class="step-item" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+          <div class="step-circle">
+            <span *ngIf="currentStep > 1">✓</span>
+            <span *ngIf="currentStep <= 1">1</span>
+          </div>
+          <span class="step-label">Personal</span>
+        </div>
+        
+        <div class="step-item" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+          <div class="step-circle">
+            <span *ngIf="currentStep > 2">✓</span>
+            <span *ngIf="currentStep <= 2">2</span>
+          </div>
+          <span class="step-label">Address</span>
+        </div>
+        
+        <div class="step-item" [class.active]="currentStep >= 3" [class.completed]="currentStep > 3">
+          <div class="step-circle">
+            <span *ngIf="currentStep > 3">✓</span>
+            <span *ngIf="currentStep <= 3">3</span>
+          </div>
+          <span class="step-label">Children</span>
+        </div>
+        
+        <div class="step-item" [class.active]="currentStep >= 4">
+          <div class="step-circle">
+            <span>4</span>
+          </div>
+          <span class="step-label">Payment</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form content -->
+    <div class="form-content">
+      
+      <!-- Step 1: Personal Information -->
+      <div *ngIf="currentStep === 1" class="step-form">
+        <h2 class="form-title">Personal Information</h2>
+        
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.firstName"
+            name="firstName"
+            placeholder="Enter your first name"
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.lastName"
+            name="lastName"
+            placeholder="Enter your last name"
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input 
+            type="email" 
+            class="form-input" 
+            [(ngModel)]="formData.email"
+            name="email"
+            placeholder="Enter your email address"
+            required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input 
+            type="tel" 
+            class="form-input" 
+            [(ngModel)]="formData.phone"
+            name="phone"
+            placeholder="Enter your phone number"
+            required>
+        </div>
+        
+        <!-- Profile Photo Upload -->
+        <div class="form-group">
+          <label class="form-label">Profile Photo (Optional)</label>
+          <input 
+            type="file" 
+            class="form-input" 
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            name="profilePhoto">
+          <small class="form-hint">Maximum file size: 5MB. Accepted formats: JPG, PNG, GIF</small>
+        </div>
+        
+        <div class="form-actions single">
+          <button type="button" class="btn-continue" (click)="nextStep()">
+            Continue
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Address Information -->
+      <div *ngIf="currentStep === 2" class="step-form">
+        <h2 class="form-title">Address Information</h2>
+        
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.address"
+            name="address"
+            placeholder="Enter your full address"
+            required>
+        </div>
+        
+        <div class="location-section">
+          <label class="form-label">Location on Map</label>
+          <div class="map-placeholder">
+            <div class="map-error">
+              <i class="error-icon">!</i>
+              <p class="error-text">Oops! Something went wrong.</p>
+              <span class="error-detail">This page didn't load Google Maps correctly. See the JavaScript console for technical details.</span>
+            </div>
+          </div>
+          <p class="map-instruction">Tap and hold to move the pin</p>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">City</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              [(ngModel)]="formData.city"
+              name="city"
+              placeholder="Enter city">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">State/Province</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              [(ngModel)]="formData.state"
+              name="state"
+              placeholder="Enter state">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">ZIP/Postal Code</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              [(ngModel)]="formData.zipCode"
+              name="zipCode"
+              placeholder="Enter ZIP code">
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-back" (click)="previousStep()">
+            Previous
+          </button>
+          <button type="button" class="btn-continue" (click)="nextStep()">
+            Next Step
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Children Information -->
+      <div *ngIf="currentStep === 3" class="step-form">
+        <h2 class="form-title">Children Information</h2>
+        
+        <div *ngFor="let student of formData.students; let i = index" class="student-card">
+          <div class="student-header">
+            <h3 class="student-title">Child {{ i + 1 }}</h3>
+            <button 
+              *ngIf="formData.students.length > 1" 
+              type="button" 
+              class="btn-remove" 
+              (click)="removeStudent(i)">
+              Remove
+            </button>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Child's Name</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              [(ngModel)]="student.name"
+              [name]="'studentName' + i"
+              placeholder="Enter child's full name"
+              required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Grade</label>
+              <select 
+                class="form-input" 
+                [(ngModel)]="student.grade"
+                [name]="'studentGrade' + i"
+                required>
+                <option value="">Select grade</option>
+                <option *ngFor="let grade of grades" [value]="grade">
+                  {{ grade }}
+                </option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Age</label>
+              <input 
+                type="number" 
+                class="form-input" 
+                [(ngModel)]="student.age"
+                [name]="'studentAge' + i"
+                placeholder="Age"
+                min="3"
+                max="18">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Subjects Needed</label>
+            <div class="checkbox-grid">
+              <label 
+                *ngFor="let subject of subjects" 
+                class="checkbox-item"
+                [class.selected]="student.subjects.includes(subject)">
+                <input 
+                  type="checkbox" 
+                  [checked]="student.subjects.includes(subject)"
+                  (change)="toggleStudentSubject(i, subject)"
+                  [name]="'studentSubject' + i + subject">
+                <span class="checkmark"></span>
+                {{ subject }}
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Special Requirements</label>
+            <textarea 
+              class="form-input" 
+              [(ngModel)]="student.challenges"
+              [name]="'studentChallenges' + i"
+              placeholder="Any learning challenges, special needs, or specific requirements"
+              rows="3">
+            </textarea>
+          </div>
+        </div>
+        
+        <button type="button" class="btn-add-student" (click)="addStudent()">
+          + Add Another Child
+        </button>
+        
+        <div class="form-actions">
+          <button type="button" class="btn-back" (click)="previousStep()">
+            Back
+          </button>
+          <button type="button" class="btn-continue" (click)="nextStep()">
+            Continue
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 4: Services & Payment -->
+      <div *ngIf="currentStep === 4" class="step-form">
+        <h2 class="form-title">Services & Payment</h2>
+        
+        <div class="services-section">
+          <h3 class="section-title">Select Services</h3>
+          
+          <div class="services-grid">
+            <label class="service-item" [class.selected]="formData.services.includes('tutoring')">
+              <input 
+                type="checkbox" 
+                value="tutoring"
+                (change)="toggleService('tutoring')"
+                name="serviceTutoring">
+              <span class="service-icon">📚</span>
+              <div class="service-content">
+                <h4>Tutoring</h4>
+                <p>One-on-one academic support</p>
+              </div>
+            </label>
+            
+            <label class="service-item" [class.selected]="formData.services.includes('homework')">
+              <input 
+                type="checkbox" 
+                value="homework"
+                (change)="toggleService('homework')"
+                name="serviceHomework">
+              <span class="service-icon">📝</span>
+              <div class="service-content">
+                <h4>Homework Help</h4>
+                <p>Assistance with daily assignments</p>
+              </div>
+            </label>
+            
+            <label class="service-item" [class.selected]="formData.services.includes('test-prep')">
+              <input 
+                type="checkbox" 
+                value="test-prep"
+                (change)="toggleService('test-prep')"
+                name="serviceTestPrep">
+              <span class="service-icon">🎯</span>
+              <div class="service-content">
+                <h4>Test Preparation</h4>
+                <p>Focused exam readiness</p>
+              </div>
+            </label>
+            
+            <label class="service-item" [class.selected]="formData.services.includes('summer')">
+              <input 
+                type="checkbox" 
+                value="summer"
+                (change)="toggleService('summer')"
+                name="serviceSummer">
+              <span class="service-icon">☀️</span>
+              <div class="service-content">
+                <h4>Summer Programs</h4>
+                <p>Enrichment during school breaks</p>
+              </div>
+            </label>
+          </div>
+        </div>
+        
+        <div class="payment-section">
+          <h3 class="section-title">Payment Information</h3>
+          
+          <div class="payment-methods">
+            <h4>Payment Method</h4>
+            <div class="payment-options">
+              <label class="payment-option" [class.selected]="formData.paymentMethod === 'credit'">
+                <input 
+                  type="radio" 
+                  value="credit"
+                  [(ngModel)]="formData.paymentMethod"
+                  name="paymentMethod">
+                <span class="radio-mark"></span>
+                Credit Card
+              </label>
+              
+              <label class="payment-option" [class.selected]="formData.paymentMethod === 'bank'">
+                <input 
+                  type="radio" 
+                  value="bank"
+                  [(ngModel)]="formData.paymentMethod"
+                  name="paymentMethod">
+                <span class="radio-mark"></span>
+                Bank Transfer
+              </label>
+              
+              <label class="payment-option" [class.selected]="formData.paymentMethod === 'paypal'">
+                <input 
+                  type="radio" 
+                  value="paypal"
+                  [(ngModel)]="formData.paymentMethod"
+                  name="paymentMethod">
+                <span class="radio-mark"></span>
+                PayPal
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Billing Frequency</label>
+            <select 
+              class="form-input" 
+              [(ngModel)]="formData.billingFrequency"
+              name="billingFrequency">
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+          
+          <div class="payment-note">
+            <p>Payment details will be collected separately after registration is complete.</p>
+            <p>By proceeding, you agree to our Terms of Service and Privacy Policy.</p>
+          </div>
+        </div>
+        
+        <div class="form-actions-final">
+          <button type="button" class="btn-back" (click)="previousStep()">
+            Previous
+          </button>
+          <button type="button" class="btn-download">
+            📥 Download as ZIP
+          </button>
+          <button 
+            type="button" 
+            class="btn-complete" 
+            (click)="onSubmit()"
+            [disabled]="isSubmitting">
+            <span *ngIf="isSubmitting">Submitting...</span>
+            <span *ngIf="!isSubmitting">Complete Registration</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
