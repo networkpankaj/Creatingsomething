@@ -1,0 +1,15 @@
+<div class="modal-backdrop" *ngIf="isOpen" (click)="onBackdropClick()"></div>
+<div class="modal-container" *ngIf="isOpen" tabindex="-1" role="dialog" aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">{{ title }}</h3>
+      <button type="button" class="close-btn" aria-label="Close" (click)="close()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <ng-content></ng-content>
+    </div>
+    <div class="modal-footer" *ngIf="showFooter">
+      <button type="button" class="modal-btn" (click)="close()">Close</button>
+    </div>
+  </div>
+</div>

@@ -1,149 +1,128 @@
-<div class="modal-overlay" *ngIf="isVisible" (click)="onBackdropClick($event)">
+<div class="modal-overlay" *ngIf="show" (click)="onBackgroundClick($event)">
   <div class="modal-content" (click)="$event.stopPropagation()">
-    <button class="modal-close" (click)="onClose()">×</button>
-    
-    <div class="modal-header" *ngIf="parent">
-      <div class="profile-avatar" [style.background]="parent.color">
-        {{ parent.initials }}
-      </div>
-      <div class="profile-info">
-        <h2 class="profile-name">{{ parent.firstName }} {{ parent.lastName }}</h2>
-        <p class="profile-location">📍 {{ parent.location }}</p>
-        <div class="profile-rating">
-          <div class="stars">
-            <span *ngFor="let star of getStarArray(parent.rating)" 
-                  class="star" 
-                  [class.filled]="star">★</span>
-          </div>
-          <span class="rating-text">{{ parent.rating }}/5</span>
-        </div>
-      </div>
+    <!-- Modal Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">
+        <span class="header-icon">👨‍👩‍👧‍👦</span>
+        Parent Profile
+      </h2>
+      <button class="close-btn" (click)="closeModal()" type="button">
+        <span class="close-icon">✕</span>
+      </button>
     </div>
 
+    <!-- Modal Body -->
     <div class="modal-body" *ngIf="parent">
-      <!-- Contact Information -->
-      <div class="info-section">
-        <h3 class="section-title">Contact Information</h3>
-        <div class="contact-grid">
-          <div class="contact-item">
-            <span class="contact-label">Email:</span>
-            <span class="contact-value">{{ parent.email || 'Not provided' }}</span>
-          </div>
-          <div class="contact-item">
-            <span class="contact-label">Phone:</span>
-            <span class="contact-value">{{ parent.phone || 'Not provided' }}</span>
-          </div>
-          <div class="contact-item" *ngIf="parent.registrationDate">
-            <span class="contact-label">Registration Date:</span>
-            <span class="contact-value">{{ formatDate(parent.registrationDate) }}</span>
-          </div>
+      <!-- Parent Info -->
+      <div class="parent-details">
+        <div class="parent-avatar-large" [style.background-color]="parent.color">
+          <span class="avatar-text-large">{{ parent.initials }}</span>
         </div>
-      </div>
-
-      <div class="info-grid">
-        <!-- Subject Needs -->
-        <div class="info-section">
-          <h3 class="section-title">Subject Needs</h3>
-          <div class="subject-tags" *ngIf="parent.subjectNeeds?.length; else noSubjects">
-            <span *ngFor="let subject of parent.subjectNeeds" class="subject-tag">
-              {{ subject }}
-            </span>
+        
+        <div class="parent-main-info">
+          <h3 class="parent-name-large">{{ parent.firstName }} {{ parent.lastName }}</h3>
+          <div class="parent-location-large">
+            <!-- <span class="location-icon">📍</span> -->
+            <span class="location-text">{{ getFullAddress() }}</span>
           </div>
-          <ng-template #noSubjects>
-            <p class="no-data">No subjects specified</p>
-          </ng-template>
-        </div>
-
-        <!-- Priority Level -->
-        <div class="info-section">
-          <h3 class="section-title">Priority Level</h3>
-          <div class="priority-badge" [class]="getPriorityClass(parent.priority)">
+          <!-- <div class="parent-priority" [class]="getPriorityClass(parent.priority)">
+            <span class="priority-icon">⚡</span>
             {{ parent.priority }}
-          </div>
+          </div> -->
         </div>
       </div>
 
-      <!-- Student Information -->
+      <!-- Subject Needs -->
       <div class="info-section">
-        <h3 class="section-title">Children Information</h3>
-        <div class="students-list" *ngIf="parent.students?.length; else noStudents">
-          <div *ngFor="let student of parent.students; let i = index" class="student-item">
-            <h4 class="student-name">{{ student.name }} - {{ student.grade }}</h4>
-            <div class="student-details">
-              <!-- Age -->
-              <div class="detail-group" *ngIf="student.age">
-                <span class="detail-label">Age:</span>
-                <span class="detail-value">{{ student.age }} years old</span>
+        <h4 class="section-title">
+          <span class="section-icon">📚</span>
+          Subject Requirements
+        </h4>
+        <div class="subject-tags">
+          <span class="subject-tag" *ngFor="let subject of parent.subjectNeeds">
+            {{ subject }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Children Information -->
+      <div class="info-section">
+        <h4 class="section-title">
+          <span class="section-icon">👶</span>
+          Children Information
+        </h4>
+        <div class="students-details">
+          <div class="student-card" *ngFor="let student of parent.students">
+            <div class="student-header">
+              <h5 class="student-name">{{ student.name }}</h5>
+              <span class="student-grade">Grade {{ student.grade }}</span>
+            </div>
+            
+            <div class="student-info">
+              <div class="student-strengths" *ngIf="student.strengths && student.strengths.length > 0">
+                <span class="info-label">
+                  <span class="label-icon">💪</span>
+                  Strengths:
+                </span>
+                <div class="info-tags">
+                  <span class="strength-tag" *ngFor="let strength of student.strengths">{{ strength }}</span>
+                </div>
               </div>
               
-              <!-- Subjects/Strengths -->
-              <div class="detail-group" *ngIf="student.strengths && student.strengths.length > 0">
-                <span class="detail-label">Subjects:</span>
-                <span class="detail-value">{{ student.strengths.join(', ') }}</span>
-              </div>
-              
-              <!-- Challenges - Fixed with proper null checking -->
-              <div class="detail-group" *ngIf="student.challenges && student.challenges.length > 0">
-                <span class="detail-label">Special Requirements:</span>
-                <span class="detail-value">{{ student.challenges.join(', ') }}</span>
-              </div>
-              
-              <!-- Show message if no additional info -->
-              <div class="detail-group" *ngIf="!student.strengths?.length && !student.challenges?.length && !student.age">
-                <span class="detail-value no-details">No additional information provided</span>
+              <div class="student-challenges" *ngIf="student.challenges && student.challenges.length > 0">
+                <span class="info-label">
+                  <span class="label-icon">🎯</span>
+                  Needs help with:
+                </span>
+                <div class="info-tags">
+                  <span class="challenge-tag" *ngFor="let challenge of student.challenges">{{ challenge }}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <ng-template #noStudents>
-          <p class="no-data">No children information provided</p>
-        </ng-template>
-      </div>
-
-      <!-- Preferred Schedule -->
-      <div class="info-section">
-        <h3 class="section-title">Preferred Schedule</h3>
-        <div class="schedule-grid" *ngIf="getDaysWithSchedule().length; else noSchedule">
-          <div *ngFor="let day of getDaysWithSchedule()" class="schedule-item">
-            <span class="day-name">{{ day.day }}</span>
-            <span class="time-slot">{{ day.time }}</span>
-          </div>
-        </div>
-        <ng-template #noSchedule>
-          <p class="no-data">No schedule preferences specified</p>
-        </ng-template>
       </div>
 
       <!-- Additional Requirements -->
       <div class="info-section" *ngIf="parent.additionalRequirements">
-        <h3 class="section-title">Additional Requirements</h3>
-        <p class="requirements-text">{{ parent.additionalRequirements }}</p>
+        <h4 class="section-title">
+          <span class="section-icon">📝</span>
+          Additional Requirements
+        </h4>
+        <div class="requirements-card">
+          <p class="requirements-text">{{ parent.additionalRequirements }}</p>
+        </div>
       </div>
 
-      <!-- Registration Summary -->
+      <!-- Contact Information -->
       <div class="info-section">
-        <h3 class="section-title">Registration Summary</h3>
-        <div class="summary-grid">
-          <div class="summary-item">
-            <span class="summary-number">{{ parent.students?.length || 0 }}</span>
-            <span class="summary-label">Children</span>
+        <h4 class="section-title">
+          <span class="section-icon">📞</span>
+          Contact Information
+        </h4>
+        <div class="contact-info">
+          <div class="contact-item" *ngIf="parent.email">
+            <span class="contact-icon">📧</span>
+            <span class="contact-text">{{ parent.email }}</span>
           </div>
-          <div class="summary-item">
-            <span class="summary-number">{{ parent.subjectNeeds?.length || 0 }}</span>
-            <span class="summary-label">Subjects</span>
-          </div>
-          <div class="summary-item">
-            <span class="summary-number">{{ getDaysWithSchedule().length }}</span>
-            <span class="summary-label">Available Days</span>
+          <div class="contact-item" *ngIf="parent.phone">
+            <span class="contact-icon">📱</span>
+            <span class="contact-text">{{ parent.phone }}</span>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Modal Footer -->
     <div class="modal-footer">
-      <!-- Fix: Use onClose() instead of closeModal() -->
-      <button class="btn-secondary" (click)="onClose()">Close</button>
-      <button class="btn-primary" (click)="contactParent()">Contact Parent</button>
+      <button class="btn-secondary" (click)="closeModal()" type="button">
+        <span class="btn-icon">✕</span>
+        Close
+      </button>
+      <button class="btn-primary" (click)="contactParent()" type="button">
+        <span class="btn-icon">💬</span>
+        Contact Parent
+      </button>
     </div>
   </div>
 </div>

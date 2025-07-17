@@ -1,0 +1,167 @@
+<div class="modal-overlay" *ngIf="show" (click)="onBackgroundClick($event)">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <ng-container *ngIf="getTeacherData() as teacherData">
+      
+      <!-- Header -->
+      <div class="modal-header">
+        <div class="header-content">
+          <div class="teacher-avatar-large" [style.background-color]="teacherData.color">
+            {{ teacherData.initials }}
+          </div>
+          
+          <div class="teacher-info">
+            <h2 class="teacher-name">{{ teacherData.firstName }} {{ teacherData.lastName }}</h2>
+            <p class="teacher-subject">{{ teacherData.subject }} Specialist</p>
+            
+            <div class="teacher-rating">
+              <div class="stars">
+                <span *ngFor="let star of getStarArray(teacherData.rating)" 
+                      class="star" 
+                      [class.filled]="star">★</span>
+              </div>
+              <span class="rating-text">{{ teacherData.rating }}/5 • {{ teacherData.totalRatings }} reviews</span>
+            </div>
+          </div>
+        </div>
+        
+        <button class="close-btn" (click)="closeModal()" type="button">
+          <span class="close-icon">×</span>
+        </button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">{{ teacherData.experience }}</div>
+            <div class="stat-label">Years Experience</div>
+          </div>
+          <!-- <div class="stat-card">
+            <div class="stat-number">{{ teacherData.studentsHelped }}</div>
+            <div class="stat-label">Students Helped</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">${{ teacherData.hourlyRate }}</div>
+            <div class="stat-label">Hourly Rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">{{ teacherData.availability }}</div>
+            <div class="stat-label">Availability</div>
+          </div> -->
+        </div>
+
+        <!-- About -->
+        <div class="content-section">
+          <h3 class="section-title">
+            <span class="title-icon">👤</span>
+            Bio
+          </h3>
+          <p class="section-content">{{ teacherData.bio }}</p>
+        </div>
+
+        <!-- Specializations -->
+        <div class="content-section">
+          <h3 class="section-title">
+            <span class="title-icon">🎯</span>
+            Specializations
+          </h3>
+          <div class="tags-container">
+            <span class="tag" *ngFor="let spec of teacherData.specializations">
+              {{ spec }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="content-section">
+          <h3 class="section-title">
+            <span class="title-icon">🎓</span>
+            Education
+          </h3>
+          <div class="education-list">
+            <div class="education-item" *ngFor="let edu of teacherData.education">
+              <div class="education-content">
+                <div class="education-degree">{{ edu.degree }}</div>
+                <!-- Only show school and year if they exist -->
+                <div class="education-details" *ngIf="edu.school || edu.year">
+                  <span *ngIf="edu.school">{{ edu.school }}</span>
+                  <span *ngIf="edu.school && edu.year"> • </span>
+                  <span *ngIf="edu.year">{{ edu.year }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Teaching Approach -->
+        <div class="content-section" *ngIf="teacherData.teachingApproach">
+          <h3 class="section-title">
+            <span class="title-icon">📚</span>
+            Teaching Approach
+          </h3>
+          <p class="section-content">{{ teacherData.teachingApproach }}</p>
+        </div>
+
+        <!-- Schedule -->
+        <!-- <div class="content-section">
+          <h3 class="section-title">
+            <span class="title-icon">📅</span>
+            Available Schedule
+          </h3>
+          <div class="schedule-grid">
+            <div class="schedule-item" *ngFor="let day of getScheduleDays()">
+              <span class="day-name">{{ day }}</span>
+              <span class="day-time">{{ teacherData.schedule[day] || 'Not Available' }}</span>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- Contact -->
+        <div class="content-section">
+          <h3 class="section-title">
+            <span class="title-icon">📞</span>
+            Contact Information
+          </h3>
+          <div class="contact-list">
+            <div class="contact-item">
+              <span class="contact-icon">📧</span>
+              <div class="contact-info">
+                <div class="contact-label">Email Address</div>
+                <div class="contact-value">{{ teacherData.email }}</div>
+              </div>
+            </div>
+            <div class="contact-item" *ngIf="teacherData.phone">
+              <span class="contact-icon">📱</span>
+              <div class="contact-info">
+                <div class="contact-label">Phone Number</div>
+                <div class="contact-value">{{ teacherData.phone }}</div>
+              </div>
+            </div>
+            <div class="contact-item" *ngIf="teacherData.location">
+              <span class="contact-icon">📍</span>
+              <div class="contact-info">
+                <div class="contact-label">Location</div>
+                <div class="contact-value">{{ teacherData.location }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()" type="button">
+          Cancel
+        </button>
+        <button class="btn btn-primary" (click)="contactTeacher()" type="button">
+          <span class="btn-icon">💬</span>
+          Contact Teacher
+        </button>
+      </div>
+      
+    </ng-container>
+  </div>
+</div>

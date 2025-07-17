@@ -1,0 +1,109 @@
+<div class="dynamic-form-container">
+  <div class="form-header">
+    <h2 class="form-title">
+      {{ userType === 'provider' ? 'Join as Service Provider' : 'Register for Service' }}
+    </h2>
+    <p class="form-subtitle">
+      {{ getFormSubtitle() }}
+    </p>
+  </div>
+
+  <form class="dynamic-form" [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+    <div class="form-sections">
+      <div class="form-section" *ngFor="let section of formSections">
+        <h3 class="section-title">{{ section.title }}</h3>
+        
+        <div class="form-grid">
+          <div class="form-group" *ngFor="let field of section.fields" [ngClass]="getFieldClass(field)">
+            <label class="form-label" [for]="field.id">
+              {{ field.label }}
+              <span class="required" *ngIf="field.required">*</span>
+            </label>
+            
+            <!-- Text Input -->
+            <input 
+              *ngIf="field.type === 'text' || field.type === 'email' || field.type === 'tel' || field.type === 'number'"
+              [type]="field.type"
+              [id]="field.id"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.id"
+              class="form-input"
+              [class.error]="isFieldInvalid(field.id)"
+            >
+            
+            <!-- Select Dropdown -->
+            <select 
+              *ngIf="field.type === 'select'"
+              [id]="field.id"
+              [formControlName]="field.id"
+              class="form-select"
+              [class.error]="isFieldInvalid(field.id)"
+            >
+              <option value="">Select {{ field.label.toLowerCase() }}</option>
+              <option *ngFor="let option of field.options" [value]="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+            
+            <!-- Textarea -->
+            <textarea 
+              *ngIf="field.type === 'textarea'"
+              [id]="field.id"
+              [placeholder]="field.placeholder"
+              [formControlName]="field.id"
+              class="form-textarea"
+              [class.error]="isFieldInvalid(field.id)"
+              rows="4"
+            ></textarea>
+            
+            <!-- Checkbox Group -->
+            <div *ngIf="field.type === 'checkbox'" class="checkbox-group">
+              <label 
+                *ngFor="let option of field.options" 
+                class="checkbox-label"
+                [class.checked]="isCheckboxChecked(field.id, option.value)"
+              >
+                <input 
+                  type="checkbox" 
+                  [value]="option.value"
+                  (change)="onCheckboxChange(field.id, option.value, $event)"
+                  class="checkbox-input"
+                >
+                <span class="checkbox-custom"></span>
+                <span class="checkbox-text">{{ option.label }}</span>
+              </label>
+            </div>
+            
+            <!-- Field Error Message -->
+            <div class="field-error" *ngIf="isFieldInvalid(field.id)">
+              <span class="error-icon">⚠️</span>
+              {{ getFieldErrorMessage(field.id) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button 
+        type="button" 
+        class="btn-secondary btn-form"
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button 
+        type="submit" 
+        class="btn-primary btn-form"
+        [disabled]="!dynamicForm.valid || isSubmitting"
+      >
+        <span *ngIf="isSubmitting" class="loading-spinner">⏳</span>
+        <span *ngIf="!isSubmitting">
+          {{ userType === 'provider' ? 'Join as Provider' : 'Register for Service' }}
+          <span class="btn-arrow">→</span>
+        </span>
+      </button>
+    </div>
+  </form>
+</div>

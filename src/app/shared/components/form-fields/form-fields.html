@@ -1,0 +1,388 @@
+<div class="form-field-container">
+  <!-- Text Input Field -->
+  <div *ngIf="field.type === 'text'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="text"
+      class="form-control"
+      [placeholder]="field.placeholder || ''"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Email Input Field -->
+  <div *ngIf="field.type === 'email'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="email"
+      class="form-control"
+      [placeholder]="field.placeholder || ''"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Phone Input Field -->
+  <div *ngIf="field.type === 'tel'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="tel"
+      class="form-control"
+      [placeholder]="field.placeholder || ''"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Number Input Field -->
+  <div *ngIf="field.type === 'number'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="number"
+      class="form-control"
+      [placeholder]="field.placeholder || ''"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Textarea Field -->
+  <div *ngIf="field.type === 'textarea'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <textarea
+      [id]="field.id"
+      class="form-control"
+      [placeholder]="field.placeholder || ''"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+      rows="4"
+      cols="50"
+    ></textarea>
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Select Dropdown Field -->
+  <div *ngIf="field.type === 'select'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <select
+      [id]="field.id"
+      class="form-control form-select"
+      [value]="value"
+      [required]="field.required"
+      (change)="onSelectChange($event)"
+      [class.is-invalid]="isInvalid"
+    >
+      <option value="" disabled>Select {{ field.label }}</option>
+      <option 
+        *ngFor="let option of field.options" 
+        [value]="option.value"
+        [selected]="value === option.value"
+      >
+        {{ option.label }}
+      </option>
+    </select>
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Radio Button Field -->
+  <div *ngIf="field.type === 'radio'" class="form-group">
+    <fieldset class="form-fieldset">
+      <legend class="form-label">
+        {{ field.label }}
+        <span *ngIf="field.required" class="required">*</span>
+      </legend>
+      <div class="radio-group">
+        <div 
+          *ngFor="let option of field.options" 
+          class="form-check"
+        >
+          <input
+            [id]="field.id + '_' + option.value"
+            type="radio"
+            class="form-check-input"
+            [name]="field.id"
+            [value]="option.value"
+            [checked]="value === option.value"
+            [required]="field.required"
+            (change)="onRadioChange($event)"
+            [class.is-invalid]="isInvalid"
+          />
+          <label 
+            [for]="field.id + '_' + option.value" 
+            class="form-check-label"
+          >
+            {{ option.label }}
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Checkbox Field -->
+  <div *ngIf="field.type === 'checkbox'" class="form-group">
+    <fieldset class="form-fieldset">
+      <legend class="form-label">
+        {{ field.label }}
+        <span *ngIf="field.required" class="required">*</span>
+      </legend>
+      <div class="checkbox-group">
+        <div 
+          *ngFor="let option of field.options" 
+          class="form-check"
+        >
+          <input
+            [id]="field.id + '_' + option.value"
+            type="checkbox"
+            class="form-check-input"
+            [name]="field.id"
+            [value]="option.value"
+            [checked]="isChecked(option.value)"
+            [required]="field.required && !hasAnyCheckboxSelected()"
+            (change)="onCheckboxChange($event)"
+            [class.is-invalid]="isInvalid"
+          />
+          <label 
+            [for]="field.id + '_' + option.value" 
+            class="form-check-label"
+          >
+            {{ option.label }}
+          </label>
+        </div>
+      </div>
+    </fieldset>
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Password Field -->
+  <div *ngIf="field.type === 'password'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <div class="password-input-wrapper">
+      <input
+        [id]="field.id"
+        [type]="showPassword ? 'text' : 'password'"
+        class="form-control"
+        [placeholder]="field.placeholder || ''"
+        [value]="value"
+        [required]="field.required"
+        (input)="onInputChange($event)"
+        [class.is-invalid]="isInvalid"
+      />
+      <button 
+        type="button" 
+        class="password-toggle-btn"
+        (click)="togglePasswordVisibility()"
+        [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+      >
+        <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+      </button>
+    </div>
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Date Input Field -->
+  <div *ngIf="field.type === 'date'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="date"
+      class="form-control"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+      [min]="field.min"
+      [max]="field.max"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Time Input Field -->
+  <div *ngIf="field.type === 'time'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="time"
+      class="form-control"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- File Input Field -->
+  <div *ngIf="field.type === 'file'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="file"
+      class="form-control"
+      [required]="field.required"
+      (change)="onFileChange($event)"
+      [class.is-invalid]="isInvalid"
+      [accept]="field.accept"
+      [multiple]="field.multiple"
+    />
+    <div *ngIf="field.helpText" class="form-text text-muted">
+      {{ field.helpText }}
+    </div>
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Range/Slider Field -->
+  <div *ngIf="field.type === 'range'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+      <span class="range-value">({{ value }})</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="range"
+      class="form-control form-range"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+      [min]="field.min || 0"
+      [max]="field.max || 100"
+      [step]="field.step || 1"
+    />
+    <div class="range-labels" *ngIf="field.min !== undefined && field.max !== undefined">
+      <span class="range-min">{{ field.min }}</span>
+      <span class="range-max">{{ field.max }}</span>
+    </div>
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Color Input Field -->
+  <div *ngIf="field.type === 'color'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="color"
+      class="form-control form-control-color"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- URL Input Field -->
+  <div *ngIf="field.type === 'url'" class="form-group">
+    <label [for]="field.id" class="form-label">
+      {{ field.label }}
+      <span *ngIf="field.required" class="required">*</span>
+    </label>
+    <input
+      [id]="field.id"
+      type="url"
+      class="form-control"
+      [placeholder]="field.placeholder || 'https://example.com'"
+      [value]="value"
+      [required]="field.required"
+      (input)="onInputChange($event)"
+      [class.is-invalid]="isInvalid"
+    />
+    <div *ngIf="isInvalid && errorMessage" class="invalid-feedback">
+      {{ errorMessage }}
+    </div>
+  </div>
+
+  <!-- Help Text -->
+  <div *ngIf="field.helpText && field.type !== 'file'" class="form-text text-muted">
+    {{ field.helpText }}
+  </div>
+
+  <!-- Custom Field Type Message -->
+  <div *ngIf="!isValidFieldType()" class="form-group">
+    <div class="alert alert-warning">
+      <i class="fas fa-exclamation-triangle"></i>
+      Unsupported field type: {{ field.type }}
+    </div>
+  </div>
+</div>

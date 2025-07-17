@@ -1,0 +1,116 @@
+.form-field-container {
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: #d32f2f;
+  margin-left: 2px;
+}
+
+.form-control,
+.form-select,
+.form-range,
+.form-control-color {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 0.25rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.form-check-input {
+  margin-right: 0.5rem;
+}
+
+.form-check-label {
+  font-weight: 400;
+}
+
+.form-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.invalid-feedback {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.is-invalid {
+  border-color: #d32f2f;
+}
+
+.form-text {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.password-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle-btn {
+  background: none;
+  border: none;
+  margin-left: -2.5rem;
+  cursor: pointer;
+  color: #888;
+  font-size: 1.1rem;
+  padding: 0 0.5rem;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+.range-value {
+  font-size: 0.95rem;
+  color: #1976d2;
+  margin-left: 0.5rem;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  background: #fff3cd;
+  color: #856404;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.alert i {
+  margin-right: 0.5rem;
+}

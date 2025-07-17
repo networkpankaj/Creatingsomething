@@ -1,0 +1,619 @@
+<!-- Header Section -->
+<header class="header" id="home">
+  <nav class="navbar">
+    <div class="nav-container">
+      <!-- Logo -->
+      <div class="nav-logo">
+        <div class="logo-container">
+          <div class="logo-icon">📚</div>
+          <span class="logo-text">RogoPedia</span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="nav-menu" [class.active]="isMobileMenuOpen">
+        <a href="#home" class="nav-link active" (click)="closeMobileMenu()">Home</a>
+        <a href="#features" class="nav-link" (click)="closeMobileMenu()">Features</a>
+        <a href="#about" class="nav-link" (click)="closeMobileMenu()">About</a>
+        <a href="#pricing" class="nav-link" (click)="closeMobileMenu()">Pricing</a>
+        <a href="#contact" class="nav-link" (click)="closeMobileMenu()">Contact</a>
+        
+        <!-- Mobile Auth Buttons (only visible on mobile) -->
+        <div class="nav-menu-auth">
+          <button class="btn-secondary" (click)="navigateToSignIn(); closeMobileMenu()">
+            Sign In
+          </button>
+          <button class="btn-primary" (click)="navigateToSignUp(); closeMobileMenu()">
+            Sign Up
+          </button>
+        </div>
+
+        <!-- Mobile Menu Footer -->
+        <div class="nav-menu-footer">
+          <p>Follow us on social media</p>
+          <div class="nav-menu-social">
+            <a href="#" title="Facebook">📘</a>
+            <a href="#" title="Twitter">🐦</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="LinkedIn">💼</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Auth Buttons -->
+      <div class="nav-auth">
+        <button class="btn-secondary" (click)="navigateToSignIn()">
+          Sign In
+        </button>
+        <button class="btn-primary" (click)="navigateToSignUp()">
+          Sign Up
+        </button>
+      </div>
+
+      <!-- Mobile Menu Toggle (Hamburger) -->
+      <div class="nav-toggle" [class.active]="isMobileMenuOpen" (click)="toggleMobileMenu()">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div class="nav-overlay" [class.active]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+  <div class="hero-container">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="badge-text">🎯 All Services Platform</span>
+        </div>
+        <h1 class="hero-title">
+          Your One-Stop<br>
+          <span class="hero-gradient">Service Platform</span>
+        </h1>
+        <p class="hero-description">
+          From education to home services, beauty to tech support - connect with verified professionals 
+          for all your needs in one convenient platform.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn-secondary btn-large">
+            <span class="play-icon">▶</span>
+            Watch Demo
+          </button>
+          <button 
+            class="btn-primary btn-large" 
+            (click)="installPwa()" 
+            *ngIf="showInstallButton"
+          >
+            📱 Install App
+          </button>
+        </div>
+        <div class="hero-trust">
+          <p class="trust-text">Trusted by 50,000+ customers across India</p>
+          <div class="trust-logos">
+            <div class="trust-logo">👨‍🏫</div>
+            <div class="trust-logo">🏠</div>
+            <div class="trust-logo">🔧</div>
+            <div class="trust-logo">⭐</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-right">
+        <div class="hero-visual">
+          <div class="dashboard-preview">
+            <div class="preview-header">
+              <div class="preview-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+              <span class="preview-title">EduInnovate Dashboard</span>
+            </div>
+            <div class="preview-content">
+              <div class="preview-stats">
+                <div class="stat-card">
+                  <div class="stat-value">125</div>
+                  <div class="stat-label">Students</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value">98%</div>
+                  <div class="stat-label">Success Rate</div>
+                </div>
+              </div>
+              <div class="preview-chart">
+                <div class="chart-title">Performance Overview</div>
+                <div class="chart-bars">
+                  <div class="bar" style="height: 60%"></div>
+                  <div class="bar" style="height: 80%"></div>
+                  <div class="bar active" style="height: 95%"></div>
+                  <div class="bar" style="height: 70%"></div>
+                  <div class="bar" style="height: 85%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">✨ Our Services</div>
+      <h2 class="section-title">All Services in One Platform</h2>
+      <p class="section-description">
+        From education to home services, we connect you with trusted professionals for all your needs
+      </p>
+    </div>
+    
+    <div class="features-grid">
+      <div
+        class="feature-card"
+        *ngFor="let feature of features"
+        [routerLink]="['/service', feature.key]"
+        tabindex="0"
+        role="button"
+        [attr.aria-label]="'Open ' + feature.title + ' form'"
+      >
+        <div class="feature-icon">{{ feature.icon }}</div>
+        <h3 class="feature-title">{{ feature.title }}</h3>
+        <p class="feature-description">{{ feature.description }}</p>
+        <button class="feature-btn">
+          {{ feature.buttonText }}
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-left">
+        <div class="about-image">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&h=400&fit=crop&auto=format" alt="Education">
+          <div class="about-overlay">
+            <div class="play-button">
+              <span class="play-icon">▶</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="about-right">
+        <div class="section-badge">🎓 About EduInnovate</div>
+        <h2 class="section-title">Transforming Education Through Innovation</h2>
+        <p class="about-description">
+          We believe every teacher deserves the best tools to inspire and educate. 
+          Our platform combines cutting-edge technology with educational expertise 
+          to create meaningful learning experiences.
+        </p>
+        
+        <div class="about-features">
+          <div class="about-feature">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h4>Personalized Learning</h4>
+              <p>Adapt to each student's unique learning style and pace</p>
+            </div>
+          </div>
+          
+          <div class="about-feature">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h4>Data-Driven Insights</h4>
+              <p>Make informed decisions with comprehensive analytics</p>
+            </div>
+          </div>
+          
+          <div class="about-feature">
+            <div class="feature-check">✓</div>
+            <div class="feature-text">
+              <h4>Collaborative Environment</h4>
+              <p>Foster communication between teachers, students, and parents</p>
+            </div>
+          </div>
+        </div>
+        
+        <button class="btn-primary btn-large">
+          Learn More
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-badge">💬 Testimonials</div>
+      <h2 class="section-title">What Educators Are Saying</h2>
+    </div>
+    
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p class="testimonial-text">
+            "EduInnovate has transformed how I manage my classroom. The analytics 
+            help me identify struggling students early and provide targeted support."
+          </p>
+        </div>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img src="https://images.unsplash.com/photo-1494790108755-2616c7fe3405?w=50&h=50&fit=crop&crop=face&auto=format" alt="Teacher">
+          </div>
+          <div class="author-info">
+            <div class="author-name">Sarah Johnson</div>
+            <div class="author-role">High School Mathematics Teacher</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p class="testimonial-text">
+            "The mobile app makes it so easy to stay connected with my students 
+            and parents. Communication has never been this streamlined."
+          </p>
+        </div>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50&h=50&fit=crop&crop=face&auto=format" alt="Teacher">
+          </div>
+          <div class="author-info">
+            <div class="author-name">Michael Chen</div>
+            <div class="author-role">Elementary School Principal</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <div class="testimonial-content">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p class="testimonial-text">
+            "Student engagement has increased dramatically since we started using 
+            EduInnovate. The interactive features are fantastic!"
+          </p>
+        </div>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face&auto=format" alt="Teacher">
+          </div>
+          <div class="author-info">
+            <div class="author-name">David Wilson</div>
+            <div class="author-role">Science Department Head</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <div class="cta-icon">🚀</div>
+      <h2 class="cta-title">Ready to Transform Your Teaching?</h2>
+      <p class="cta-description">
+        Join thousands of educators who are already using EduInnovate to create 
+        better learning experiences for their students.
+      </p>
+      <div class="cta-buttons">
+        <button class="btn-primary btn-large" (click)="navigateToSignUp()">
+          Start Free Trial
+          <span class="btn-arrow">→</span>
+        </button>
+        <button class="btn-secondary btn-large">
+          Schedule Demo
+        </button>
+      </div>
+      <div class="cta-note">
+        <span class="note-icon">✨</span>
+        No credit card required • 14-day free trial
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Contact Section -->
+<section class="contact" id="contact">
+  <div class="container">
+    <!-- Contact Header -->
+    <div class="contact-header">
+      <div class="section-badge">📞 Contact Us</div>
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="section-description">
+        Ready to transform your teaching experience? We're here to help you get started.
+      </p>
+    </div>
+
+    <!-- Contact Main Content -->
+    <div class="contact-main">
+      <!-- Contact Form Section -->
+      <div class="contact-form-section">
+        <div class="form-header">
+          <h3 class="form-title">Send us a Message</h3>
+          <p class="form-description">
+            Fill out the form below and we'll get back to you within 24 hours.
+          </p>
+        </div>
+
+        <form class="contact-form" (ngSubmit)="onSubmitContactForm()" #contactForm="ngForm">
+          <!-- Name and Email Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="firstName">First Name *</label>
+              <input 
+                type="text" 
+                id="firstName" 
+                name="firstName"
+                class="form-input" 
+                placeholder="Enter your first name"
+                [(ngModel)]="contactFormData.firstName"
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="lastName">Last Name *</label>
+              <input 
+                type="text" 
+                id="lastName" 
+                name="lastName"
+                class="form-input" 
+                placeholder="Enter your last name"
+                [(ngModel)]="contactFormData.lastName"
+                required
+              >
+            </div>
+          </div>
+
+          <!-- Email and Phone Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="email">Email Address *</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email"
+                class="form-input" 
+                placeholder="your@email.com"
+                [(ngModel)]="contactFormData.email"
+                required
+              >
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="phone">Phone Number</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="phone"
+                class="form-input" 
+                placeholder="+91 98765 43210"
+                [(ngModel)]="contactFormData.phone"
+              >
+            </div>
+          </div>
+
+          <!-- Subject and Organization Row -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="subject">Subject *</label>
+              <select 
+                id="subject" 
+                name="subject"
+                class="form-select"
+                [(ngModel)]="contactFormData.subject"
+                required
+              >
+                <option value="">Select a subject</option>
+                <option value="demo">Request Demo</option>
+                <option value="pricing">Pricing Inquiry</option>
+                <option value="support">Technical Support</option>
+                <option value="partnership">Partnership</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="organization">School/Organization</label>
+              <input 
+                type="text" 
+                id="organization" 
+                name="organization"
+                class="form-input" 
+                placeholder="Your school name"
+                [(ngModel)]="contactFormData.organization"
+              >
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="form-group">
+            <label class="form-label" for="message">Message *</label>
+            <textarea 
+              id="message" 
+              name="message"
+              class="form-textarea" 
+              placeholder="Tell us about your needs and how we can help..."
+              [(ngModel)]="contactFormData.message"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Checkbox -->
+          <div class="form-checkbox">
+            <input 
+              type="checkbox" 
+              id="newsletter" 
+              name="newsletter"
+              class="checkbox-input"
+              [(ngModel)]="contactFormData.newsletter"
+            >
+            <label class="checkbox-label" for="newsletter">
+              I'd like to receive updates and educational content via email
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            class="btn-primary btn-large form-submit"
+            [disabled]="!contactForm.valid"
+          >
+            Send Message
+            <span class="btn-arrow">→</span>
+          </button>
+        </form>
+      </div>
+
+     
+    </div>
+  </div>
+</section>
+
+<!-- Install Banner for Mobile -->
+<div class="install-banner" *ngIf="showInstallButton && !isInstalled">
+  <div class="install-banner-content">
+    <div class="install-banner-left">
+      <div class="install-icon">📱</div>
+      <div class="install-text">
+        <h4>Install EduInnovate App</h4>
+        <p>Get the full app experience</p>
+      </div>
+    </div>
+    <button class="install-banner-btn" (click)="installPwa()">
+      Install
+    </button>
+  </div>
+</div>
+
+<!-- PWA Installed Indicator -->
+<div class="pwa-installed" *ngIf="isInstalled">
+  ✅ App Installed
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Company Info Section -->
+      <div class="footer-section">
+        <div class="footer-logo">
+          <div class="logo-container">
+            <div class="logo-icon">📚</div>
+            <span class="logo-text">EduInnovate</span>
+          </div>
+        </div>
+        <p class="footer-description">
+          Empowering educators with innovative tools to create exceptional learning experiences. 
+          Join thousands of teachers who trust EduInnovate for their digital classroom needs.
+        </p>
+        <div class="footer-contact">
+          <div class="contact-item">
+            <span class="contact-icon">📧</span>
+            <span>hello&#64;eduinnovate.com</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📞</span>
+            <span>+91 98765 43210</span>
+          </div>
+          <div class="contact-item">
+            <span class="contact-icon">📍</span>
+            <span>New Delhi, India</span>
+          </div>
+        </div>
+        <div class="social-links">
+          <a href="#" class="social-link" title="Facebook">📘</a>
+          <a href="#" class="social-link" title="Twitter">🐦</a>
+          <a href="#" class="social-link" title="Instagram">📷</a>
+          <a href="#" class="social-link" title="LinkedIn">💼</a>
+        </div>
+      </div>
+      
+      <!-- Product Section -->
+      <div class="footer-section">
+        <h4 class="footer-title">Product</h4>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#integrations">Integrations</a></li>
+          <li><a href="#security">Security</a></li>
+          <li><a href="#updates">Updates</a></li>
+          <li><a href="#mobile-app">Mobile App</a></li>
+        </ul>
+      </div>
+      
+      <!-- Company Section -->
+      <div class="footer-section">
+        <h4 class="footer-title">Company</h4>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#careers">Careers</a></li>
+          <li><a href="#press">Press & Media</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#partners">Partners</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      
+      <!-- Support & Resources Section -->
+      <div class="footer-section">
+        <h4 class="footer-title">Support</h4>
+        <ul class="footer-links">
+          <li><a href="#help">Help Center</a></li>
+          <li><a href="#documentation">Documentation</a></li>
+          <li><a href="#community">Community</a></li>
+          <li><a href="#tutorials">Tutorials</a></li>
+          <li><a href="#status">System Status</a></li>
+          <li><a href="#feedback">Feedback</a></li>
+        </ul>
+        
+        <!-- Newsletter Signup -->
+        <div class="newsletter">
+          <h5 class="newsletter-title">Stay Updated</h5>
+          <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Enter your email">
+            <button type="submit" class="newsletter-btn">Subscribe</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    
+    
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p>&copy; 2024 EduInnovate. All rights reserved.</p>
+      <div class="footer-links-inline">
+        <a href="#privacy">Privacy Policy</a>
+        <a href="#terms">Terms of Service</a>
+        <a href="#cookies">Cookie Policy</a>
+        <a href="#sitemap">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<app-service-modal
+  [isOpen]="showServiceModal"
+  [serviceData]="selectedService"
+  (modalClose)="closeServiceModal()">
+</app-service-modal>

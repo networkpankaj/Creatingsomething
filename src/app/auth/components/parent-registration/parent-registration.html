@@ -2,7 +2,7 @@
   <div class="registration-card">
     <!-- Header with progress -->
     <div class="registration-header">
-      <h1 class="title">Parent Registration</h1>
+      <h1 class="title">Parent/Student Registration</h1>
       <p class="subtitle">Complete your profile to get started</p>
       
       <!-- Progress bar -->
@@ -36,7 +36,7 @@
             <span *ngIf="currentStep > 3">✓</span>
             <span *ngIf="currentStep <= 3">3</span>
           </div>
-          <span class="step-label">Children</span>
+          <span class="step-label">Student</span>
         </div>
         
         <div class="step-item" [class.active]="currentStep >= 4">
@@ -53,7 +53,7 @@
       
       <!-- Step 1: Personal Information -->
       <div *ngIf="currentStep === 1" class="step-form">
-        <h2 class="form-title">Personal Information</h2>
+        <h2 class="form-title">Parent/Student Information</h2>
         
         <div class="form-group">
           <label class="form-label">First Name</label>
@@ -133,48 +133,92 @@
             required>
         </div>
         
-        <div class="location-section">
-          <label class="form-label">Location on Map</label>
-          <div class="map-placeholder">
-            <div class="map-error">
-              <i class="error-icon">!</i>
-              <p class="error-text">Oops! Something went wrong.</p>
-              <span class="error-detail">This page didn't load Google Maps correctly. See the JavaScript console for technical details.</span>
-            </div>
-          </div>
-          <p class="map-instruction">Tap and hold to move the pin</p>
-        </div>
-        
-        <div class="form-row">
-          <div class="form-group">
+        <div class="form-row city-state-zip">
+          <div class="form-group city-group">
             <label class="form-label">City</label>
             <input 
               type="text" 
-              class="form-input" 
+              class="form-input city-input" 
               [(ngModel)]="formData.city"
               name="city"
-              placeholder="Enter city">
+              placeholder="Enter your city"
+              required>
           </div>
           
-          <div class="form-group">
-            <label class="form-label">State/Province</label>
-            <input 
-              type="text" 
-              class="form-input" 
+          <div class="form-group state-group">
+            <label class="form-label">State</label>
+            <select 
+              class="form-input state-select" 
               [(ngModel)]="formData.state"
               name="state"
-              placeholder="Enter state">
+              required>
+              <option value="">Select State</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+              <option value="Assam">Assam</option>
+              <option value="Bihar">Bihar</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Goa">Goa</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Haryana">Haryana</option>
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+              <option value="Jharkhand">Jharkhand</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Manipur">Manipur</option>
+              <option value="Meghalaya">Meghalaya</option>
+              <option value="Mizoram">Mizoram</option>
+              <option value="Nagaland">Nagaland</option>
+              <option value="Odisha">Odisha</option>
+              <option value="Punjab">Punjab</option>
+              <option value="Rajasthan">Rajasthan</option>
+              <option value="Sikkim">Sikkim</option>
+              <option value="Tamil Nadu">Tamil Nadu</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Tripura">Tripura</option>
+              <option value="Uttar Pradesh">Uttar Pradesh</option>
+              <option value="Uttarakhand">Uttarakhand</option>
+              <option value="West Bengal">West Bengal</option>
+              <optgroup label="Union Territories">
+                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                <option value="Chandigarh">Chandigarh</option>
+                <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                <option value="Delhi">Delhi</option>
+                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                <option value="Ladakh">Ladakh</option>
+                <option value="Lakshadweep">Lakshadweep</option>
+                <option value="Puducherry">Puducherry</option>
+              </optgroup>
+            </select>
           </div>
           
-          <div class="form-group">
-            <label class="form-label">ZIP/Postal Code</label>
+          <div class="form-group zip-group">
+            <label class="form-label">PIN Code</label>
             <input 
               type="text" 
-              class="form-input" 
+              class="form-input pin-input" 
               [(ngModel)]="formData.zipCode"
               name="zipCode"
-              placeholder="Enter ZIP code">
+              placeholder="000000"
+              pattern="[0-9]{6}"
+              maxlength="6"
+              required>
+            <small class="form-hint">6-digit PIN code</small>
           </div>
+        </div>
+        
+        <!-- Custom City Input (if Other is selected) -->
+        <div class="form-group" *ngIf="formData.city === 'Other'">
+          <label class="form-label">Enter Your City</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            [(ngModel)]="formData.customCity"
+            name="customCity"
+            placeholder="Enter your city name"
+            required>
         </div>
         
         <div class="form-actions">
@@ -189,13 +233,12 @@
 
       <!-- Step 3: Children Information -->
       <div *ngIf="currentStep === 3" class="step-form">
-        <h2 class="form-title">Children Information</h2>
+        <h2 class="form-title">Student Information</h2>
         
         <div *ngFor="let student of formData.students; let i = index" class="student-card">
           <div class="student-header">
-            <h3 class="student-title">Child {{ i + 1 }}</h3>
-            <button 
-              *ngIf="formData.students.length > 1" 
+            <h3 class="student-title">Student {{ i + 1 }}</h3>
+            <button *ngIf="formData.students.length > 1" 
               type="button" 
               class="btn-remove" 
               (click)="removeStudent(i)">
@@ -204,13 +247,13 @@
           </div>
           
           <div class="form-group">
-            <label class="form-label">Child's Name</label>
+            <label class="form-label">Student Name</label>
             <input 
               type="text" 
               class="form-input" 
               [(ngModel)]="student.name"
               [name]="'studentName' + i"
-              placeholder="Enter child's full name"
+              placeholder="Enter student's full name"
               required>
           </div>
           
@@ -240,6 +283,19 @@
                 min="3"
                 max="18">
             </div>
+          </div>
+          
+          <!-- Previous Class Marks/Grades Field - NEW -->
+          <div class="form-group">
+            <label class="form-label">Previous Class Marks/Grades (Optional)</label>
+            <input 
+              type="text" 
+              class="form-input" 
+              [(ngModel)]="student.previousMarks"
+              [name]="'studentPreviousMarks' + i"
+              placeholder="e.g., Math: 85%, Science: 78%, English: 90% or Grade A/B/C"
+              maxlength="200">
+            <small class="form-hint">Enter percentage marks or letter grades from previous class/year. This helps us understand your child's academic level.</small>
           </div>
           
           <div class="form-group">
@@ -351,7 +407,7 @@
         <div class="payment-section">
           <h3 class="section-title">Payment Information</h3>
           
-          <div class="payment-methods">
+          <!-- <div class="payment-methods">
             <h4>Payment Method</h4>
             <div class="payment-options">
               <label class="payment-option" [class.selected]="formData.paymentMethod === 'credit'">
@@ -384,9 +440,9 @@
                 PayPal
               </label>
             </div>
-          </div>
+          </div> -->
           
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="form-label">Billing Frequency</label>
             <select 
               class="form-input" 
@@ -396,7 +452,7 @@
               <option value="quarterly">Quarterly</option>
               <option value="yearly">Yearly</option>
             </select>
-          </div>
+          </div> -->
           
           <div class="payment-note">
             <p>Payment details will be collected separately after registration is complete.</p>
@@ -408,9 +464,9 @@
           <button type="button" class="btn-back" (click)="previousStep()">
             Previous
           </button>
-          <button type="button" class="btn-download">
+          <!-- <button type="button" class="btn-download">
             📥 Download as ZIP
-          </button>
+          </button> -->
           <button 
             type="button" 
             class="btn-complete" 
@@ -420,6 +476,175 @@
             <span *ngIf="!isSubmitting">Complete Registration</span>
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Review Modal Overlay -->
+<div *ngIf="showReviewModal" class="review-modal-overlay" (click)="closeReviewModal()">
+  <div class="review-modal-content" (click)="$event.stopPropagation()">
+    <div class="review-modal-header">
+      <h2 class="review-title">
+        <span class="review-icon">📋</span>
+        Review Your Registration
+      </h2>
+      <p class="review-subtitle">Please review all information before submitting</p>
+      <button class="modal-close-btn" (click)="closeReviewModal()">
+        <span class="close-icon">✕</span>
+      </button>
+    </div>
+    
+    <div class="review-modal-body">
+      <!-- Personal Information Section -->
+      <div class="review-section">
+        <div class="review-section-header">
+          <h3 class="review-section-title">
+            <span class="section-icon">👤</span>
+            Personal Information
+          </h3>
+          <button class="edit-section-btn" (click)="editSection(1)">
+            <span class="edit-icon">✏️</span>
+            Edit
+          </button>
+        </div>
+        
+        <div class="review-grid">
+          <div class="review-item">
+            <label class="review-label">Full Name</label>
+            <span class="review-value">{{ formData.firstName }} {{ formData.lastName }}</span>
+          </div>
+          <div class="review-item">
+            <label class="review-label">Email</label>
+            <span class="review-value">{{ formData.email }}</span>
+          </div>
+          <div class="review-item">
+            <label class="review-label">Phone</label>
+            <span class="review-value">{{ formData.phone }}</span>
+          </div>
+          <div class="review-item">
+            <label class="review-label">Profile Photo</label>
+            <span class="review-value">{{ formData.profilePhoto ? 'Uploaded' : 'Not uploaded' }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Address Information Section -->
+      <div class="review-section">
+        <div class="review-section-header">
+          <h3 class="review-section-title">
+            <span class="section-icon">📍</span>
+            Address Information
+          </h3>
+          <button class="edit-section-btn" (click)="editSection(2)">
+            <span class="edit-icon">✏️</span>
+            Edit
+          </button>
+        </div>
+        
+        <div class="review-grid">
+          <div class="review-item full-width">
+            <label class="review-label">Address</label>
+            <span class="review-value">{{ formData.address }}</span>
+          </div>
+          <div class="review-item">
+            <label class="review-label">City</label>
+            <span class="review-value">{{ formData.city }}</span>
+          </div>
+          <div class="review-item">
+            <label class="review-label">State</label>
+            <span class="review-value">{{ formData.state }}</span>
+          </div>
+          <div class="review-item">
+            <label class="review-label">ZIP Code</label>
+            <span class="review-value">{{ formData.zipCode }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Students Information Section -->
+      <div class="review-section">
+        <div class="review-section-header">
+          <h3 class="review-section-title">
+            <span class="section-icon">👶</span>
+            Students Information ({{ formData.students.length }} student{{ formData.students.length > 1 ? 's' : '' }})
+          </h3>
+          <button class="edit-section-btn" (click)="editSection(3)">
+            <span class="edit-icon">✏️</span>
+            Edit
+          </button>
+        </div>
+        
+        <div *ngFor="let student of formData.students; let i = index" class="student-review-card">
+          <h4 class="student-review-title">Student {{ i + 1 }}: {{ student.name }}</h4>
+          <div class="review-grid">
+            <div class="review-item">
+              <label class="review-label">Grade</label>
+              <span class="review-value">{{ student.grade }}</span>
+            </div>
+            <div class="review-item">
+              <label class="review-label">Age</label>
+              <span class="review-value">{{ student.age }} years</span>
+            </div>
+            <!-- Previous Marks Review Item - NEW -->
+            <div class="review-item full-width" *ngIf="student.previousMarks">
+              <label class="review-label">Previous Class Marks</label>
+              <span class="review-value">{{ student.previousMarks }}</span>
+            </div>
+            <div class="review-item full-width">
+              <label class="review-label">Subjects</label>
+              <div class="review-subjects">
+                <span *ngFor="let subject of student.subjects" class="subject-tag">{{ subject }}</span>
+              </div>
+            </div>
+            <div class="review-item full-width" *ngIf="student.challenges">
+              <label class="review-label">Special Requirements</label>
+              <span class="review-value">{{ student.challenges }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Services & Payment Section -->
+      <div class="review-section">
+        <div class="review-section-header">
+          <h3 class="review-section-title">
+            <span class="section-icon">💼</span>
+            Services & Payment
+          </h3>
+          <button class="edit-section-btn" (click)="editSection(4)">
+            <span class="edit-icon">✏️</span>
+            Edit
+          </button>
+        </div>
+        
+        <div class="review-grid">
+          <div class="review-item full-width">
+            <label class="review-label">Selected Services</label>
+            <div class="review-services">
+              <span *ngFor="let service of formData.services" class="service-tag">{{ getServiceDisplayName(service) }}</span>
+            </div>
+          </div>
+          <div class="review-item">
+            <label class="review-label">Registration Fee</label>
+            <span class="review-value registration-fee">₹500</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="review-modal-footer">
+      <div class="modal-footer-actions">
+        <button class="btn-cancel" (click)="closeReviewModal()">
+          Cancel
+        </button>
+        <button class="btn-download-review" (click)="downloadRegistrationData()">
+          📥 Download Data
+        </button>
+        <button class="btn-confirm-submit" (click)="confirmAndSubmit()" [disabled]="isSubmitting">
+          <span *ngIf="isSubmitting">Submitting...</span>
+          <span *ngIf="!isSubmitting">✅ Confirm & Submit</span>
+        </button>
       </div>
     </div>
   </div>

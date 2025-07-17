@@ -1,9 +1,4 @@
 <div class="auth-container">
-  <div class="auth-background">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
-  </div>
-  
   <div class="auth-card">
     <div class="auth-header">
       <h1 class="brand-title">EduInnovate</h1>
@@ -18,27 +13,31 @@
         
         <div class="registration-cards">
           <!-- Parent Registration Card -->
-          <a routerLink="/parent-registration" class="registration-card parent-card">
-            <div class="card-icon">👨‍👩‍👧‍👦</div>
-            <h4>Parent</h4>
-            <p>Find qualified teachers for your children's educational needs</p>
-            <button type="button" class="btn-register-parent">Register as Parent</button>
-          </a>
+          <div class="registration-card parent-card" (click)="navigateToParentRegistration()">
+            
+            <!-- <h4>Parent</h4>
+            <p>Find qualified teachers for your children's educational needs</p> -->
+            <button class="btn-register">
+              Parent / Student
+            </button>
+          </div>
           
           <!-- Teacher Registration Card -->
-          <a routerLink="/teacher-registration" class="registration-card teacher-card">
-            <div class="card-icon">👩‍🏫</div>
-            <h4>Teacher</h4>
-            <p>Share your expertise and teach students online</p>
-            <button type="button" class="btn-register-teacher">Register as Teacher</button>
-          </a>
+          <div class="registration-card teacher-card" (click)="navigateToTeacherRegistration()">
+           
+            <!-- <h4>Teacher</h4>
+            <p>Share your expertise and teach students online</p> -->
+            <button class="btn-register">
+              Teacher
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="auth-footer">
       <p>Already have an account? 
-        <button type="button" class="link-button" (click)="navigateToSignIn()">
+        <button class="link-button" (click)="navigateToSignIn()">
           Sign In
         </button>
       </p>

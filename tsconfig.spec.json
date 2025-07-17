@@ -10,5 +10,5 @@
   },
   "include": [
     "src/**/*.ts"
-  ]
+, "src/app/auth/services/pwa.service.ts"  ]
 }

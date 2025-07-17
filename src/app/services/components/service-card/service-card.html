@@ -1,0 +1,97 @@
+<div [class]="getCardClasses()" (click)="onCardClick()">
+  <!-- Popular Badge -->
+  <div class="popular-badge" *ngIf="serviceData.popular">
+    <span class="badge-icon">🔥</span>
+    <span class="badge-text">Popular</span>
+  </div>
+
+  <!-- Featured Badge -->
+  <div class="featured-badge" *ngIf="featured">
+    <span class="badge-icon">⭐</span>
+    <span class="badge-text">Featured</span>
+  </div>
+
+  <!-- Unavailable Overlay -->
+  <div class="unavailable-overlay" *ngIf="!serviceData.available">
+    <div class="unavailable-content">
+      <div class="unavailable-icon">🚫</div>
+      <div class="unavailable-text">Currently Unavailable</div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="loading-spinner">⏳</div>
+  </div>
+
+  <!-- Card Header -->
+  <div class="card-header">
+    <div class="service-icon">{{ serviceData.icon }}</div>
+    
+    <!-- Favorite Button -->
+    <button class="favorite-btn" (click)="onFavoriteClick($event)" type="button">
+      <span class="favorite-icon">♡</span>
+    </button>
+  </div>
+
+  <!-- Card Content -->
+  <div class="card-content">
+    <!-- Category Tag -->
+    <div class="category-tag" [style.background-color]="getCategoryColor()">
+      {{ serviceData.category.replace('-', ' ') | titlecase }}
+    </div>
+
+    <!-- Service Title -->
+    <h3 class="service-title">{{ serviceData.title }}</h3>
+    
+    <!-- Service Description -->
+    <p class="service-description">{{ serviceData.description }}</p>
+
+    <!-- Rating Section -->
+    <div class="rating-section" *ngIf="showRating && serviceData.rating">
+      <div class="stars">
+        <span 
+          *ngFor="let star of getStarArray(); let i = index"
+          class="star"
+          [class.filled]="star === 1"
+        >
+          ⭐
+        </span>
+      </div>
+      <span class="rating-text">{{ serviceData.rating }}</span>
+      <span class="review-count" *ngIf="serviceData.reviewCount">
+        ({{ serviceData.reviewCount }} reviews)
+      </span>
+    </div>
+
+    <!-- Price Range -->
+    <div class="price-section" *ngIf="showPrice && serviceData.priceRange">
+      <span class="price-label">Starting from</span>
+      <span class="price-value">{{ serviceData.priceRange }}</span>
+    </div>
+
+    <!-- Features List -->
+    <div class="features-section" *ngIf="showFeatures && serviceData.features && serviceData.features.length > 0">
+      <div class="features-title">What's included:</div>
+      <ul class="features-list">
+        <li *ngFor="let feature of serviceData.features" class="feature-item">
+          <span class="feature-icon">✓</span>
+          <span class="feature-text">{{ feature }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Card Footer -->
+  <div class="card-footer">
+    <button 
+      class="service-btn"
+      [disabled]="!serviceData.available || loading"
+      (click)="onButtonClick($event)"
+      type="button"
+    >
+      <span class="btn-text">{{ serviceData.buttonText }}</span>
+      <span class="btn-arrow">→</span>
+    </button>
+  </div>
+</div>

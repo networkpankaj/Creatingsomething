@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+// If SubjectTeachers is a default export:
 import { SubjectTeachers } from './subject-teachers';
+
+// If SubjectTeachers is not the default export but is exported with a different name, use:
+// import { ActualExportedName } from './subject-teachers';
 
 describe('SubjectTeachers', () => {
   let component: SubjectTeachers;

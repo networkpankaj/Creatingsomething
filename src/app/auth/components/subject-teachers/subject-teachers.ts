@@ -1,114 +1,91 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-interface Teacher {
-  id: string;
-  firstName: string;
-  lastName: string;
-  initials: string;
-  subject: string;
-  rating: number;
-  totalRatings: number;
-  experience: number;
-  classes: string[];
-  isTopRated?: boolean;
-  avatar?: string;
-  color: string;
-}
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LocalStorageService, RegisteredParent, CurrentUser } from '../../services/local-storage.service';
+import { TeacherProfileModalComponent } from '../teacher-profile-modal/teacher-profile-modal';
 
 @Component({
   selector: 'app-subject-teachers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, TeacherProfileModalComponent],
   templateUrl: './subject-teachers.html',
-  styleUrl: './subject-teachers.css'
+  styleUrls: ['./subject-teachers.css']
 })
 export class SubjectTeachersComponent implements OnInit {
-  selectedSubject: string = 'Mathematics';
-  
-  subjects: string[] = [
-    'Mathematics',
-    'Science',
-    'English',
-    'History',
-    'Art'
-  ];
+  teachers: any[] = [];
+  filteredTeachers: any[] = [];
+  subjects: string[] = ['All', 'Mathematics', 'Science', 'English', 'History', 'Computer Science', 'Languages'];
+  selectedSubject: string = 'All';
+  searchTerm: string = '';
 
-  teachers: Teacher[] = [
-    {
-      id: '1',
-      firstName: 'Robert',
-      lastName: 'Chen',
-      initials: 'RC',
-      subject: 'Mathematics',
-      rating: 4.8,
-      totalRatings: 5,
-      experience: 15,
-      classes: ['Algebra', 'Calculus', 'Statistics'],
-      isTopRated: true,
-      color: '#6366f1'
-    },
-    {
-      id: '2',
-      firstName: 'Emily',
-      lastName: 'Watson',
-      initials: 'EW',
-      subject: 'Mathematics',
-      rating: 4.6,
-      totalRatings: 5,
-      experience: 12,
-      classes: ['Geometry', 'Trigonometry'],
-      color: '#10b981'
-    },
-    {
-      id: '3',
-      firstName: 'David',
-      lastName: 'Park',
-      initials: 'DP',
-      subject: 'Mathematics',
-      rating: 4.5,
-      totalRatings: 5,
-      experience: 8,
-      classes: ['Pre-Algebra', 'Basic Math'],
-      color: '#f59e0b'
-    },
-    {
-      id: '4',
-      firstName: 'Sarah',
-      lastName: 'Johnson',
-      initials: 'SJ',
-      subject: 'Science',
-      rating: 4.9,
-      totalRatings: 5,
-      experience: 10,
-      classes: ['Physics', 'Chemistry'],
-      isTopRated: true,
-      color: '#8b5cf6'
-    },
-    {
-      id: '5',
-      firstName: 'Michael',
-      lastName: 'Brown',
-      initials: 'MB',
-      subject: 'English',
-      rating: 4.7,
-      totalRatings: 5,
-      experience: 12,
-      classes: ['Literature', 'Writing'],
-      color: '#ef4444'
-    }
-  ];
+  // User profile properties - Updated to handle both types
+  currentUser: CurrentUser | null = null; // Changed from RegisteredParent to CurrentUser
+  showUserDropdown: boolean = false;
 
-  constructor() {}
+  // Add these properties
+  selectedTeacher: any = null;
+  showTeacherModal: boolean = false;
 
-  ngOnInit(): void {}
+  constructor(
+    private router: Router,
+    private localStorageService: LocalStorageService
+  ) {}
 
-  selectSubject(subject: string): void {
-    this.selectedSubject = subject;
+  ngOnInit(): void {
+    this.loadTeachers();
+    this.loadCurrentUser();
   }
 
-  get filteredTeachers(): Teacher[] {
-    return this.teachers.filter(teacher => teacher.subject === this.selectedSubject);
+  loadTeachers(): void {
+    // Get registered teachers from localStorage only
+    const registeredTeachers = this.localStorageService.getRegisteredTeachers();
+    this.teachers = registeredTeachers.map(teacher => 
+      this.localStorageService.convertToTeacherProfile(teacher)
+    );
+
+    console.log('Loaded teachers from localStorage:', this.teachers);
+    this.filteredTeachers = [...this.teachers];
+  }
+
+  loadCurrentUser(): void {
+    // Load current user (could be parent or teacher)
+    this.currentUser = this.localStorageService.getCurrentUser();
+    console.log('Current user loaded:', this.currentUser);
+  }
+
+  filterBySubject(subject: string): void {
+    this.selectedSubject = subject;
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    let filtered = [...this.teachers];
+
+    // Filter by subject
+    if (this.selectedSubject !== 'All') {
+      filtered = filtered.filter(teacher => 
+        teacher.subject === this.selectedSubject || 
+        teacher.subjects.includes(this.selectedSubject)
+      );
+    }
+
+    // Filter by search term
+    if (this.searchTerm) {
+      const searchLower = this.searchTerm.toLowerCase();
+      filtered = filtered.filter(teacher =>
+        teacher.firstName.toLowerCase().includes(searchLower) ||
+        teacher.lastName.toLowerCase().includes(searchLower) ||
+        teacher.subject.toLowerCase().includes(searchLower) ||
+        teacher.bio.toLowerCase().includes(searchLower)
+      );
+    }
+
+    this.filteredTeachers = filtered;
+  }
+
+  onSearchChange(): void {
+    this.applyFilters();
   }
 
   getStarArray(rating: number): boolean[] {
@@ -119,18 +96,166 @@ export class SubjectTeachersComponent implements OnInit {
     return stars;
   }
 
-  getExperienceText(years: number): string {
-    return years === 1 ? '1 year' : `${years} years`;
+  // User profile methods - Updated to handle both types safely
+  getUserInitials(): string {
+    if (!this.currentUser) return 'U';
+    return `${this.currentUser.firstName.charAt(0)}${this.currentUser.lastName.charAt(0)}`.toUpperCase();
   }
 
-  getClassesText(classes: string[]): string {
-    if (classes.length <= 2) {
-      return classes.join(', ');
+  getUserName(): string {
+    if (!this.currentUser) return 'User';
+    return `${this.currentUser.firstName} ${this.currentUser.lastName}`;
+  }
+
+  toggleUserDropdown(): void {
+    this.showUserDropdown = !this.showUserDropdown;
+  }
+
+  closeUserDropdown(): void {
+    this.showUserDropdown = false;
+  }
+
+  signOut(): void {
+    // Clear user session
+    this.localStorageService.clearCurrentUser();
+    this.currentUser = null;
+    this.showUserDropdown = false;
+    
+    // Show confirmation
+    alert('You have been signed out successfully!');
+    
+    // Redirect to sign-in page
+    this.router.navigate(['/auth/sign-in']);
+  }
+
+  // Navigate to parent profiles (parent viewing their profile)
+  viewParentProfile(): void {
+    this.closeUserDropdown();
+    
+    if (!this.currentUser) {
+      alert('No user logged in');
+      return;
     }
-    return `${classes.slice(0, 2).join(', ')}...`;
+
+    // Check if current user is a parent
+    if (this.localStorageService.isCurrentUserParent()) {
+      // Safe to cast as parent
+      const parent = this.currentUser as RegisteredParent;
+      
+      const profileInfo = `Parent Profile:
+
+Name: ${parent.firstName} ${parent.lastName}
+Email: ${parent.email}
+Phone: ${parent.phone || 'Not provided'}
+Location: ${parent.location || 'Not provided'}
+
+Children: ${this.getParentChildren(parent)}
+Subject Needs: ${this.getParentSubjects(parent)}`;
+
+      alert(profileInfo);
+    } else {
+      // It's a teacher
+      const profileInfo = `Teacher Profile:
+
+Name: ${this.currentUser.firstName} ${this.currentUser.lastName}
+Email: ${this.currentUser.email}
+Phone: ${this.currentUser.phone || 'Not provided'}
+Location: ${this.currentUser.location || 'Not provided'}
+
+(Teacher profile details would be shown here)`;
+
+      alert(profileInfo);
+    }
+    
+    // Uncomment this when you have a proper parent profile page
+    // this.router.navigate(['/auth/parent-profiles']);
   }
 
-  viewProfile(teacherId: string): void {
-    console.log('Viewing profile for teacher:', teacherId);
+  // Helper methods - Updated to handle type safety
+  getParentChildren(parent: RegisteredParent): string {
+    if (!parent.students || parent.students.length === 0) {
+      return 'No children added';
+    }
+    return parent.students.map(student => `${student.name} (${student.grade})`).join(', ');
+  }
+
+  getParentSubjects(parent: RegisteredParent): string {
+    if (!parent.subjectNeeds || parent.subjectNeeds.length === 0) {
+      return 'No subjects specified';
+    }
+    return parent.subjectNeeds.join(', ');
+  }
+
+  // Add these methods
+  viewTeacherProfile(teacher: any): void {
+    console.log('viewTeacherProfile called with:', teacher);
+    this.selectedTeacher = teacher;
+    this.showTeacherModal = true;
+  }
+
+  closeTeacherModal(): void {
+    console.log('Closing teacher modal');
+    this.showTeacherModal = false;
+    this.selectedTeacher = null;
+  }
+
+  contactTeacher(teacher: any): void {
+    if (!this.currentUser) {
+      alert('Please sign in to contact teachers.');
+      this.goToSignIn();
+      return;
+    }
+
+    const message = `Hi ${teacher.firstName},
+
+I'm ${this.currentUser.firstName} ${this.currentUser.lastName}, and I'm interested in your tutoring services.
+
+Your Details:
+📚 Subject: ${teacher.subject}
+💰 Rate: $${teacher.hourlyRate}/hour
+⭐ Rating: ${teacher.rating}/5
+
+My Details:
+📧 Email: ${this.currentUser.email}
+📞 Phone: ${this.currentUser.phone || 'Available on request'}
+
+Please let me know your availability for tutoring sessions.
+
+Best regards,
+${this.currentUser.firstName} ${this.currentUser.lastName}`;
+
+    alert(`Contact Message Prepared:
+
+${message}
+
+(In a real app, this would send an email or message to the teacher)`);
+    
+    this.closeTeacherModal();
+  }
+
+  // Navigation methods
+  becomeTeacher(): void {
+    this.router.navigate(['/auth/teacher-registration']);
+  }
+
+  goToParentProfiles(): void {
+    this.router.navigate(['/auth/parent-profiles']);
+  }
+
+  goToSignIn(): void {
+    this.router.navigate(['/auth/sign-in']);
+  }
+
+  // Clear filters
+  clearFilters(): void {
+    this.selectedSubject = 'All';
+    this.searchTerm = '';
+    this.applyFilters();
+  }
+
+  // View settings
+  viewSettings(): void {
+    this.closeUserDropdown();
+    alert('Settings functionality would be implemented here');
   }
 }

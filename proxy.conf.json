@@ -1,0 +1,16 @@
+{
+  "/api/msg91/*": {
+    "target": "https://control.msg91.com",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/msg91": "/api/v5"
+    },
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, authkey"
+    }
+  }
+}

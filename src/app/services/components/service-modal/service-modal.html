@@ -1,0 +1,24 @@
+<div class="modal-backdrop" *ngIf="isOpen" (click)="modalClose.emit()"></div>
+<div class="modal-container" *ngIf="isOpen" tabindex="-1" role="dialog" aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">{{ serviceData?.title }}</h3>
+      <button type="button" class="close-btn" aria-label="Close" (click)="modalClose.emit()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form *ngIf="serviceData?.config">
+        <ng-container *ngFor="let section of serviceData.config.consumer">
+          <h4>{{ section.title }}</h4>
+          <ng-container *ngFor="let field of section.fields">
+            <app-form-fields
+              [field]="field"
+              [(value)]="field.value"
+              [isInvalid]="false">
+            </app-form-fields>
+          </ng-container>
+        </ng-container>
+        <button type="submit" class="btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

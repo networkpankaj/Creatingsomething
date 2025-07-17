@@ -1,0 +1,35 @@
+<div class="service-form-bg">
+  <div class="service-form-card">
+    <div class="service-form-header">
+      <h1 class="service-form-title">{{ title }}</h1>
+      <p class="service-form-subtitle">{{ description }}</p>
+      <div class="service-form-progress">
+        <div class="progress-bar">
+          <div class="progress-bar-fill" [style.width.%]="progress"></div>
+        </div>
+        <div class="progress-steps">
+          <div class="step" [class.active]="step === 1">1<span>Personal</span></div>
+          <div class="step" [class.active]="step === 2">2<span>Address</span></div>
+          <div class="step" [class.active]="step === 3">3<span>Student</span></div>
+          <div class="step" [class.active]="step === 4">4<span>Payment</span></div>
+        </div>
+      </div>
+    </div>
+    <form *ngIf="formConfig" class="service-form-main">
+      <ng-container *ngFor="let section of formConfig.consumer">
+        <h2 class="service-form-section-title">{{ section.title }}</h2>
+        <ng-container *ngFor="let field of section.fields">
+          <app-form-fields
+            [field]="field"
+            [(value)]="field.value"
+            [isInvalid]="false">
+          </app-form-fields>
+        </ng-container>
+      </ng-container>
+      <button type="submit" class="service-form-submit-btn">Submit</button>
+    </form>
+    <div *ngIf="!formConfig" class="service-form-notfound">
+      <p>Sorry, this service form is not available.</p>
+    </div>
+  </div>
+</div>

@@ -50,10 +50,11 @@
 
     <!-- Form content -->
     <div class="form-content">
-      <h2 class="form-title">{{ getStepTitle() }}</h2>
       
       <!-- Step 1: Personal Information -->
       <form *ngIf="currentStep === 1" class="step-form">
+        <h2 class="form-title">Personal Information</h2>
+        
         <div class="form-group">
           <label class="form-label">First Name*</label>
           <input 
@@ -63,16 +64,6 @@
             name="firstName"
             placeholder="Enter your first name"
             required>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Middle Name</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            [(ngModel)]="formData.middleName"
-            name="middleName"
-            placeholder="Enter your middle name">
         </div>
 
         <div class="form-group">
@@ -109,6 +100,18 @@
         </div>
 
         <div class="form-group">
+          <label class="form-label">Location*</label>
+          <select 
+            class="form-input" 
+            [(ngModel)]="formData.location"
+            name="location"
+            required>
+            <option value="">Select your location</option>
+            <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
           <label class="form-label">Profile Photo</label>
           <div class="photo-upload">
             <div class="upload-placeholder">
@@ -131,74 +134,70 @@
 
       <!-- Step 2: Professional Experience -->
       <form *ngIf="currentStep === 2" class="step-form">
+        <h2 class="form-title">Professional Experience</h2>
+        
+        <div class="form-group">
+          <label class="form-label">Primary Subject*</label>
+          <select 
+            class="form-input" 
+            [(ngModel)]="formData.subject"
+            name="subject"
+            (change)="onPrimarySubjectChange()"
+            required>
+            <option value="">Select your primary subject</option>
+            <option *ngFor="let subject of subjects" [value]="subject">{{ subject }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">All Subjects You Can Teach*</label>
+          <div class="subjects-grid">
+            <label 
+              *ngFor="let subject of subjects" 
+              class="subject-item"
+              [class.selected]="formData.subjects.includes(subject)">
+              <input 
+                type="checkbox" 
+                [checked]="formData.subjects.includes(subject)"
+                (change)="toggleSubject(subject)">
+              <span class="checkmark"></span>
+              {{ subject }}
+            </label>
+          </div>
+        </div>
+
         <div class="form-group">
           <label class="form-label">Years of Teaching Experience*</label>
           <input 
             type="number" 
             class="form-input" 
-            [(ngModel)]="formData.yearsOfExperience"
-            name="yearsOfExperience"
+            [(ngModel)]="formData.experience"
+            name="experience"
             placeholder="e.g., 5"
+            min="0"
             required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Current Occupation*</label>
+          <label class="form-label">Education*</label>
           <input 
             type="text" 
             class="form-input" 
-            [(ngModel)]="formData.currentOccupation"
-            name="currentOccupation"
-            placeholder="e.g., High School Teacher, Private Tutor"
+            [(ngModel)]="formData.education"
+            name="education"
+            placeholder="e.g., Bachelor's in Mathematics, Master's in Education"
             required>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Last Class Taught</label>
-          <input 
-            type="text" 
-            class="form-input" 
-            [(ngModel)]="formData.lastClassTaught"
-            name="lastClassTaught"
-            placeholder="e.g., Grade 10 Mathematics">
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Highest Education*</label>
-          <select 
-            class="form-input" 
-            [(ngModel)]="formData.highestEducation"
-            name="highestEducation"
-            required>
-            <option value="">Select your highest education</option>
-            <option value="bachelors">Bachelor's Degree</option>
-            <option value="masters">Master's Degree</option>
-            <option value="phd">PhD</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Certifications</label>
+          <label class="form-label">Bio*</label>
           <textarea 
             class="form-textarea" 
-            [(ngModel)]="formData.certifications"
-            name="certifications"
-            placeholder="List any relevant certifications or qualifications"
-            rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Brief Bio*</label>
-          <textarea 
-            class="form-textarea" 
-            [(ngModel)]="formData.briefBio"
-            name="briefBio"
+            [(ngModel)]="formData.bio"
+            name="bio"
             placeholder="Tell us about yourself and your teaching experience"
             rows="4"
-            maxlength="500"
             required></textarea>
-          <div class="character-count">{{ bioCharacterCount }}/500 characters</div>
         </div>
         
         <div class="form-actions">
@@ -211,206 +210,155 @@
         </div>
       </form>
 
-      <!-- Step 3: Subject Expertise & Availability -->
+      <!-- Step 3: Classes & Preferences -->
       <form *ngIf="currentStep === 3" class="step-form">
-        <div class="subjects-section">
-          <h3 class="section-title">Subject Expertise</h3>
-          <p class="section-subtitle">Select Subjects You Can Teach*</p>
+        <h2 class="form-title">Fee/Charges & Preferences</h2>
+        
+        <!-- Grade Levels Section - Simplified -->
+        <div class="form-group">
+          <label class="form-label">Grade Levels You Can Teach*</label>
+          <p class="field-description">Select all grade levels you're comfortable teaching</p>
           
-          <div class="subjects-grid">
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.mathematics" name="mathematics">
-              <span class="checkmark"></span>
-              Mathematics
-            </label>
+          <div class="classes-selection">
+            <select 
+              class="form-input classes-dropdown" 
+              [(ngModel)]="selectedClass"
+              name="selectedClass"
+              (change)="addSelectedClass()"
+              required>
+              <option value="">Select a class to add</option>
+              <option value="Class 1">Class 1</option>
+              <option value="Class 2">Class 2</option>
+              <option value="Class 3">Class 3</option>
+              <option value="Class 4">Class 4</option>
+              <option value="Class 5">Class 5</option>
+              <option value="Class 6">Class 6</option>
+              <option value="Class 7">Class 7</option>
+              <option value="Class 8">Class 8</option>
+              <option value="Class 9">Class 9</option>
+              <option value="Class 10">Class 10</option>
+              <option value="Class 11">Class 11</option>
+              <option value="Class 12">Class 12</option>
+            </select>
             
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.physics" name="physics">
-              <span class="checkmark"></span>
-              Physics
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.chemistry" name="chemistry">
-              <span class="checkmark"></span>
-              Chemistry
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.biology" name="biology">
-              <span class="checkmark"></span>
-              Biology
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.english" name="english">
-              <span class="checkmark"></span>
-              English
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.history" name="history">
-              <span class="checkmark"></span>
-              History
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.geography" name="geography">
-              <span class="checkmark"></span>
-              Geography
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.computerScience" name="computerScience">
-              <span class="checkmark"></span>
-              Computer Science
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.art" name="art">
-              <span class="checkmark"></span>
-              Art
-            </label>
-            
-            <label class="subject-item">
-              <input type="checkbox" [(ngModel)]="formData.subjects.music" name="music">
-              <span class="checkmark"></span>
-              Music
-            </label>
+            <!-- Selected Classes Display -->
+            <div class="selected-classes" *ngIf="formData.classes.length > 0">
+              <h5 class="selected-title">Selected Classes:</h5>
+              <div class="classes-tags">
+                <span *ngFor="let selectedClass of formData.classes; let i = index" class="class-tag">
+                  {{ selectedClass }}
+                  <button type="button" class="remove-class" (click)="removeClass(i)">×</button>
+                </span>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div class="other-subjects">
-            <label class="form-label">Other Subjects</label>
-            <div class="input-with-button">
+        <!-- Fee/Charges Section - Updated with Options -->
+        <div class="fee-charges-section">
+          <h3 class="section-title">
+            <span class="section-icon">💰</span>
+            Fee/Charges
+          </h3>
+          <p class="field-description">Choose your fee structure preference</p>
+          
+          <!-- Fee Type Selection -->
+          <div class="fee-type-selection">
+            <label class="fee-option" [class.selected]="formData.rateType === 'fixed'">
               <input 
-                type="text" 
+                type="radio" 
+                name="rateType" 
+                value="fixed"
+                [(ngModel)]="formData.rateType"
+                (change)="onRateTypeChange()">
+              <span class="radio-mark"></span>
+              <div class="fee-option-content">
+                <h4 class="fee-option-title">Fixed Monthly Rate</h4>
+                <p class="fee-option-description">Set a specific monthly fee amount</p>
+              </div>
+            </label>
+            
+            <label class="fee-option" [class.selected]="formData.rateType === 'negotiable'">
+              <input 
+                type="radio" 
+                name="rateType" 
+                value="negotiable"
+                [(ngModel)]="formData.rateType"
+                (change)="onRateTypeChange()">
+              <span class="radio-mark"></span>
+              <div class="fee-option-content">
+                <h4 class="fee-option-title">Negotiable</h4>
+                <p class="fee-option-description">Discuss fees with parents based on requirements</p>
+              </div>
+            </label>
+          </div>
+          
+          <!-- Monthly Rate Input - Shows only when Fixed is selected -->
+          <div class="monthly-rate-input" *ngIf="formData.rateType === 'fixed'">
+            <label class="form-label">Monthly Fee Amount*</label>
+            <div class="rupee-input-container">
+              <span class="rupee-symbol">₹</span>
+              <input 
+                type="number" 
+                class="form-input rupee-input" 
+                [(ngModel)]="formData.monthlyRate"
+                name="monthlyRate"
+                placeholder="5000"
+                min="500"
+                max="50000"
+                required>
+              <span class="rupee-suffix">per month</span>
+            </div>
+            <small class="form-hint">Enter your monthly teaching fee in Indian Rupees</small>
+          </div>
+          
+          <!-- Negotiable Badge - Shows when Negotiable is selected -->
+          <div class="negotiable-display" *ngIf="formData.rateType === 'negotiable'">
+            <div class="negotiable-badge">
+              <span class="negotiable-text">🤝 Negotiable</span>
+            </div>
+            <p class="negotiable-info">
+              Your fees will be discussed with parents based on subject complexity, grade level, and teaching requirements.
+            </p>
+          </div>
+        </div>
+
+        <!-- Teaching Preferences -->
+        <!-- <div class="teaching-preferences-section">
+          <h3 class="section-title">
+            <span class="section-icon">⚙️</span>
+            Teaching Preferences
+          </h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Preferred Teaching Mode</label>
+              <select 
                 class="form-input" 
-                [(ngModel)]="formData.otherSubjects"
-                name="otherSubjects"
-                placeholder="Enter other subjects">
-              <button type="button" class="btn-add" (click)="addOtherSubject()">Add</button>
+                [(ngModel)]="formData.teachingMode"
+                name="teachingMode">
+                <option value="">Select preference</option>
+                <option value="home-tuition">Home Tuition</option>
+                <option value="online">Online Classes</option>
+                <option value="both">Both (Home + Online)</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Maximum Students per Batch</label>
+              <select 
+                class="form-input" 
+                [(ngModel)]="formData.maxStudents"
+                name="maxStudents">
+                <option value="">No preference</option>
+                <option value="1">1-on-1 only</option>
+                <option value="2-3">2-3 students</option>
+                <option value="4-5">4-5 students</option>
+                <option value="6-10">6-10 students</option>
+              </select>
             </div>
           </div>
-        </div>
-
-        <div class="grade-levels-section">
-          <h3 class="section-title">Grade Levels You Can Teach*</h3>
-          
-          <div class="grade-levels-grid">
-            <label class="grade-item">
-              <input type="checkbox" [(ngModel)]="formData.gradeLevels.elementary" name="elementary">
-              <span class="checkmark"></span>
-              Elementary
-            </label>
-            
-            <label class="grade-item">
-              <input type="checkbox" [(ngModel)]="formData.gradeLevels.highSchool" name="highSchool">
-              <span class="checkmark"></span>
-              High School
-            </label>
-            
-            <label class="grade-item">
-              <input type="checkbox" [(ngModel)]="formData.gradeLevels.middleSchool" name="middleSchool">
-              <span class="checkmark"></span>
-              Middle School
-            </label>
-            
-            <label class="grade-item">
-              <input type="checkbox" [(ngModel)]="formData.gradeLevels.college" name="college">
-              <span class="checkmark"></span>
-              College
-            </label>
-          </div>
-        </div>
-
-        <div class="availability-section">
-          <h3 class="section-title">Available Time Slots*</h3>
-          <p class="section-subtitle">Select all time slots when you are available to teach</p>
-          
-          <div class="time-slots">
-            <div class="day-section">
-              <h4 class="day-title">Weekdays</h4>
-              <div class="time-grid">
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.morning" name="weekdayMorning">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Morning</span>
-                    <span class="time-range">8:00 AM - 12:00 PM</span>
-                  </div>
-                </label>
-                
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.afternoon" name="weekdayAfternoon">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Afternoon</span>
-                    <span class="time-range">12:00 PM - 4:00 PM</span>
-                  </div>
-                </label>
-                
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.evening" name="weekdayEvening">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Evening</span>
-                    <span class="time-range">4:00 PM - 8:00 PM</span>
-                  </div>
-                </label>
-                
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekdays.night" name="weekdayNight">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Night</span>
-                    <span class="time-range">8:00 PM - 10:00 PM</span>
-                  </div>
-                </label>
-              </div>
-            </div>
-
-            <div class="day-section">
-              <h4 class="day-title">Weekends</h4>
-              <div class="time-grid">
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.morning" name="weekendMorning">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Morning</span>
-                    <span class="time-range">8:00 AM - 12:00 PM</span>
-                  </div>
-                </label>
-                
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.afternoon" name="weekendAfternoon">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Afternoon</span>
-                    <span class="time-range">12:00 PM - 4:00 PM</span>
-                  </div>
-                </label>
-                
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.evening" name="weekendEvening">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Evening</span>
-                    <span class="time-range">4:00 PM - 8:00 PM</span>
-                  </div>
-                </label>
-                
-                <label class="time-slot">
-                  <input type="checkbox" [(ngModel)]="formData.availability.weekends.night" name="weekendNight">
-                  <span class="checkmark"></span>
-                  <div class="time-info">
-                    <span class="time-label">Night</span>
-                    <span class="time-range">8:00 PM - 10:00 PM</span>
-                  </div>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
+        </div> -->
         
         <div class="form-actions">
           <button type="button" class="btn-back" (click)="previousStep()">
@@ -422,115 +370,22 @@
         </div>
       </form>
 
-      <!-- Step 4: Payment Information -->
+      <!-- Step 4: Payment -->
       <form *ngIf="currentStep === 4" class="step-form">
-        <div class="rates-section">
-          <div class="form-group">
-            <label class="form-label">Hourly Rate (USD)*</label>
-            <div class="currency-input">
-              <span class="currency-symbol">$</span>
-              <input 
-                type="number" 
-                class="form-input currency" 
-                [(ngModel)]="formData.hourlyRate"
-                name="hourlyRate"
-                placeholder="25"
-                min="0"
-                step="0.01"
-                required>
-            </div>
-            <p class="rate-note">Set your hourly teaching rate</p>
-          </div>
+        <h2 class="form-title">Payment & Verification</h2>
 
-          <div class="form-group">
-            <label class="form-label">Group Session Rate (USD)</label>
-            <div class="currency-input">
-              <span class="currency-symbol">$</span>
-              <input 
-                type="number" 
-                class="form-input currency" 
-                [(ngModel)]="formData.groupSessionRate"
-                name="groupSessionRate"
-                placeholder="15"
-                min="0"
-                step="0.01">
-            </div>
-            <p class="rate-note">Optional: Set a different rate for group sessions</p>
-          </div>
-        </div>
-
-        <div class="payment-methods-section">
-          <h3 class="section-title">Payment Methods You Accept*</h3>
-          
-          <div class="payment-grid">
-            <label class="payment-method-item">
-              <input type="checkbox" [(ngModel)]="formData.paymentMethods.directDeposit" name="directDeposit">
-              <span class="checkmark"></span>
-              Direct Deposit
-            </label>
-            
-            <label class="payment-method-item">
-              <input type="checkbox" [(ngModel)]="formData.paymentMethods.paypal" name="paypal">
-              <span class="checkmark"></span>
-              PayPal
-            </label>
-            
-            <label class="payment-method-item">
-              <input type="checkbox" [(ngModel)]="formData.paymentMethods.venmo" name="venmo">
-              <span class="checkmark"></span>
-              Venmo
-            </label>
-            
-            <label class="payment-method-item">
-              <input type="checkbox" [(ngModel)]="formData.paymentMethods.zelle" name="zelle">
-              <span class="checkmark"></span>
-              Zelle
-            </label>
-            
-            <label class="payment-method-item">
-              <input type="checkbox" [(ngModel)]="formData.paymentMethods.cash" name="cash">
-              <span class="checkmark"></span>
-              Cash
-            </label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Cancellation Policy*</label>
-          <select 
-            class="form-input" 
-            [(ngModel)]="formData.cancellationPolicy"
-            name="cancellationPolicy"
-            required>
-            <option value="">Select a policy</option>
-            <option value="24hours">24 hours notice required</option>
-            <option value="12hours">12 hours notice required</option>
-            <option value="flexible">Flexible cancellation</option>
-            <option value="strict">Strict - no refunds</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Additional Notes</label>
-          <textarea 
-            class="form-textarea" 
-            [(ngModel)]="formData.additionalNotes"
-            name="additionalNotes"
-            placeholder="Any additional information about your payment terms or availability"
-            rows="3"></textarea>
-        </div>
-
+        <!-- Terms & Conditions -->
         <div class="agreements-section">
           <h3 class="section-title">Terms & Conditions</h3>
           
           <label class="agreement-item">
-            <input type="checkbox" [(ngModel)]="formData.agreeToTerms" name="agreeToTerms" required>
+            <input type="checkbox" [(ngModel)]="agreeToTerms" name="agreeToTerms" required>
             <span class="checkmark"></span>
             I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
           </label>
           
           <label class="agreement-item">
-            <input type="checkbox" [(ngModel)]="formData.agreeToEmails" name="agreeToEmails">
+            <input type="checkbox" [(ngModel)]="agreeToEmails" name="agreeToEmails">
             <span class="checkmark"></span>
             I would like to receive emails about teaching opportunities and platform updates
           </label>
@@ -540,15 +395,189 @@
           <button type="button" class="btn-back" (click)="previousStep()">
             Back
           </button>
+          <button type="button" class="btn-download" (click)="downloadRegistrationData()">
+            📥 Download Data
+          </button>
           <button 
             type="button" 
-            class="btn-complete" 
-            (click)="onSubmit()"
-            [disabled]="!formData.agreeToTerms">
-            Complete Registration
+            class="btn-review" 
+            (click)="openReviewModal()"
+            [disabled]="!agreeToTerms">
+            📋 Review & Submit
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Review Modal -->
+  <div class="review-modal-overlay" *ngIf="showReviewModal" (click)="closeReviewModal()">
+    <div class="review-modal-content" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="review-modal-header">
+        <h2 class="review-title">
+          <span class="review-icon">📋</span>
+          Teacher Registration Review
+        </h2>
+        <p class="review-subtitle">Please review your information before submitting</p>
+        <button type="button" class="modal-close-btn" (click)="closeReviewModal()">×</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="review-modal-body">
+        
+        <!-- Personal Information Section -->
+        <div class="review-section">
+          <div class="review-section-header">
+            <h3 class="review-section-title">
+              <span class="section-icon">👤</span>
+              Personal Information
+            </h3>
+            <button type="button" class="edit-section-btn" (click)="editSection(1)">
+              <span class="edit-icon">✏️</span>
+              Edit
+            </button>
+          </div>
+          <div class="review-grid">
+            <div class="review-item">
+              <label class="review-label">Name</label>
+              <span class="review-value">{{ formData.firstName }} {{ formData.lastName }}</span>
+            </div>
+            <div class="review-item">
+              <label class="review-label">Email</label>
+              <span class="review-value">{{ formData.email }}</span>
+            </div>
+            <div class="review-item">
+              <label class="review-label">Phone</label>
+              <span class="review-value">{{ formData.phone }}</span>
+            </div>
+            <div class="review-item">
+              <label class="review-label">Location</label>
+              <span class="review-value">{{ formData.location }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Experience Section -->
+        <div class="review-section">
+          <div class="review-section-header">
+            <h3 class="review-section-title">
+              <span class="section-icon">🎓</span>
+              Professional Experience
+            </h3>
+            <button type="button" class="edit-section-btn" (click)="editSection(2)">
+              <span class="edit-icon">✏️</span>
+              Edit
+            </button>
+          </div>
+          <div class="review-grid">
+            <div class="review-item">
+              <label class="review-label">Primary Subject</label>
+              <span class="review-value">{{ formData.subject }}</span>
+            </div>
+            <div class="review-item">
+              <label class="review-label">Experience</label>
+              <span class="review-value">{{ formData.experience }} years</span>
+            </div>
+            <div class="review-item">
+              <label class="review-label">Education</label>
+              <span class="review-value">{{ formData.education }}</span>
+            </div>
+            <div class="review-item full-width">
+              <label class="review-label">All Subjects</label>
+              <div class="review-subjects">
+                <span *ngFor="let subject of formData.subjects" class="subject-tag">{{ subject }}</span>
+              </div>
+            </div>
+            <div class="review-item full-width" *ngIf="formData.bio">
+              <label class="review-label">Bio</label>
+              <span class="review-value">{{ formData.bio }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Classes & Fee Section -->
+        <div class="review-section">
+          <div class="review-section-header">
+            <h3 class="review-section-title">
+              <span class="section-icon">📚</span>
+              Classes & Fee Structure
+            </h3>
+            <button type="button" class="edit-section-btn" (click)="editSection(3)">
+              <span class="edit-icon">✏️</span>
+              Edit
+            </button>
+          </div>
+          <div class="review-grid">
+            <div class="review-item full-width">
+              <label class="review-label">Grade Levels</label>
+              <div class="review-subjects">
+                <span *ngFor="let class of formData.classes" class="subject-tag">{{ class }}</span>
+              </div>
+            </div>
+            <div class="review-item">
+              <label class="review-label">Fee Structure</label>
+              <span class="review-value">
+                <span *ngIf="formData.rateType === 'fixed'" class="fee-amount">₹{{ formData.monthlyRate }}/month</span>
+                <span *ngIf="formData.rateType === 'negotiable'" class="negotiable-badge-small">Negotiable</span>
+              </span>
+            </div>
+            <div class="review-item" *ngIf="formData.teachingMode">
+              <label class="review-label">Teaching Mode</label>
+              <span class="review-value">{{ getTeachingModeDisplay(formData.teachingMode) }}</span>
+            </div>
+            <div class="review-item" *ngIf="formData.maxStudents">
+              <label class="review-label">Max Students</label>
+              <span class="review-value">{{ formData.maxStudents }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registration Summary -->
+        <div class="review-section">
+          <div class="review-section-header">
+            <h3 class="review-section-title">
+              <span class="section-icon">📄</span>
+              Registration Summary
+            </h3>
+          </div>
+          <div class="registration-summary">
+            <div class="summary-item">
+              <span class="summary-label">Registration Date:</span>
+              <span class="summary-value">{{ getCurrentDate() }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Status:</span>
+              <span class="summary-value status-pending">Pending Verification</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Profile Completion:</span>
+              <span class="summary-value">{{ getProfileCompletion() }}%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="review-modal-footer">
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-cancel" (click)="closeReviewModal()">
+            Cancel
+          </button>
+          <button type="button" class="btn-download-review" (click)="downloadRegistrationData()">
+            📥 Download
+          </button>
+          <button 
+            type="button" 
+            class="btn-confirm-submit" 
+            (click)="confirmSubmit()"
+            [disabled]="isSubmitting">
+            <span *ngIf="isSubmitting">Submitting...</span>
+            <span *ngIf="!isSubmitting">✅ Confirm & Submit</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

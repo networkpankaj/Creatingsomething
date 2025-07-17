@@ -4,16 +4,48 @@
     <div class="header-content">
       <div class="branding">
         <div class="logo">
-          <div class="logo-icon">✈️</div>
-          <span class="logo-text">EduParent Portal</span>
+          <div class="logo-icon">📚</div>
+          <span class="logo-text">EduTeacher Portal</span>
         </div>
-        <div class="welcome">
-          <span class="welcome-text">Welcome, Sarah Johnson</span>
-          <div class="user-avatar">SJ</div>
+        
+        <!-- User Profile Dropdown -->
+        <div class="user-profile" *ngIf="currentUser">
+          <div class="welcome-text">Welcome, {{ getUserName() }}</div>
+          <div class="user-avatar" (click)="toggleUserDropdown()">
+            <span class="user-initials">{{ getUserInitials() }}</span>
+            <div class="dropdown-arrow" [class.rotated]="showUserDropdown">▼</div>
+          </div>
+          
+          <!-- Dropdown Menu -->
+          <div class="user-dropdown" *ngIf="showUserDropdown" (click)="$event.stopPropagation()">
+            <div class="dropdown-menu">
+              <button class="dropdown-item" (click)="viewParentProfile()">
+                Your Profile
+              </button>
+              
+              <button class="dropdown-item" (click)="viewSettings()">
+                Settings
+              </button>
+              
+              <button class="dropdown-item sign-out" (click)="signOut()">
+                Sign out
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Login prompt if no user -->
+        <div class="welcome" *ngIf="!currentUser">
+          <button class="btn-login" (click)="goToSignIn()">
+            <span class="welcome-text">Sign In</span>
+          </button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Click overlay to close dropdown -->
+  <div class="dropdown-overlay" *ngIf="showUserDropdown" (click)="closeUserDropdown()"></div>
 
   <!-- Main Content -->
   <div class="main-content">
@@ -22,76 +54,99 @@
       <p class="page-subtitle">View and explore teacher profiles by subject</p>
     </div>
 
-    <!-- Subject Filter Tabs -->
-    <div class="subject-tabs">
+    <!-- Subject Tabs -->
+    <div class="subject-tabs" *ngIf="teachers.length > 0">
       <button 
-        *ngFor="let subject of subjects"
-        class="subject-tab"
-        [class.active]="selectedSubject === subject"
-        (click)="selectSubject(subject)">
+        *ngFor="let subject of subjects" 
+        [class]="'subject-tab ' + (selectedSubject === subject ? 'active' : '')"
+        (click)="filterBySubject(subject)">
         {{ subject }}
       </button>
     </div>
 
     <!-- Teachers Grid -->
-    <div class="teachers-grid">
-      <div 
-        *ngFor="let teacher of filteredTeachers" 
-        class="teacher-card">
-        
-        <!-- Top Rated Badge -->
-        <div *ngIf="teacher.isTopRated" class="top-rated-badge">
-          <span class="badge-icon">⭐</span>
-          <span class="badge-text">Top Rated</span>
-        </div>
-
-        <!-- Teacher Avatar -->
-        <div class="teacher-avatar" [style.background-color]="teacher.color">
-          <span class="avatar-initials">{{ teacher.initials }}</span>
-        </div>
-
-        <!-- Teacher Info -->
-        <div class="teacher-info">
-          <h3 class="teacher-name">
-            Dr. {{ teacher.firstName }} {{ teacher.lastName }}
-          </h3>
-          <p class="teacher-subject">{{ teacher.subject }}</p>
-
-          <!-- Rating -->
-          <div class="rating">
-            <div class="stars">
-              <span 
-                *ngFor="let filled of getStarArray(teacher.rating)"
-                class="star"
-                [class.filled]="filled">
-                ⭐
-              </span>
-            </div>
-            <span class="rating-text">{{ teacher.rating }}/{{ teacher.totalRatings }}</span>
+    <div class="teachers-grid" *ngIf="filteredTeachers.length > 0">
+      <div class="teacher-card" *ngFor="let teacher of filteredTeachers">
+        <!-- Teacher Header -->
+        <div class="teacher-header">
+          <div class="teacher-avatar" [style.background]="teacher.color">
+            <span class="avatar-initials">{{ teacher.initials }}</span>
+          </div>
+          
+          <div class="teacher-info">
+            <h3 class="teacher-name">{{ teacher.firstName }} {{ teacher.lastName }}</h3>
+            <p class="teacher-subject">{{ teacher.subject }}</p>
           </div>
 
-          <!-- Experience and Classes -->
-          <div class="teacher-details">
-            <div class="detail-row">
-              <div class="detail-item">
-                <span class="detail-label">Experience</span>
-                <span class="detail-value">{{ getExperienceText(teacher.experience) }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Classes</span>
-                <span class="detail-value">{{ getClassesText(teacher.classes) }}</span>
-              </div>
+          <!-- Top Rated Badge -->
+          <div class="priority-badge" *ngIf="teacher.isTopRated">
+            ⭐ Top Rated
+          </div>
+        </div>
+
+        <!-- Rating -->
+        <div class="rating">
+          <div class="stars">
+            <span *ngFor="let star of getStarArray(teacher.rating)" 
+                  class="star" 
+                  [class.filled]="star">★</span>
+          </div>
+          <span class="rating-text">{{ teacher.rating }}/5</span>
+        </div>
+
+        <!-- Subject Needs -->
+        <div class="subject-needs">
+          <span class="section-label">Subject Needs</span>
+          <div class="tags">
+            <span class="tag">{{ teacher.subject }}</span>
+            <span class="tag" *ngIf="teacher.subjects && teacher.subjects.length > 1">
+              {{ teacher.subjects[1] }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="teacher-details">
+          <div class="detail-row">
+            <div class="detail-item">
+              <span class="detail-label">Experience</span>
+              <span class="detail-value">{{ teacher.experience }} years</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Classes</span>
+              <span class="detail-value">${{ teacher.hourlyRate }}/hr</span>
             </div>
           </div>
+        </div>
 
-          <!-- View Profile Button -->
-          <button 
-            class="view-profile-btn"
-            (click)="viewProfile(teacher.id)">
+        <!-- Action Button -->
+        <div class="teacher-actions">
+          <button class="view-profile-btn" (click)="viewTeacherProfile(teacher)">
             View Full Profile
           </button>
         </div>
       </div>
     </div>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="teachers.length === 0">
+      <div class="empty-icon">👨‍🏫</div>
+      <h3>No Teachers Registered Yet</h3>
+      <p>Be the first to discover amazing teachers!</p>
+      
+      <div class="empty-actions">
+        <button class="btn-primary" (click)="becomeTeacher()">
+          Become a Teacher
+        </button>
+      </div>
+    </div>
   </div>
+
+  <!-- Teacher Profile Modal -->
+  <app-teacher-profile-modal
+    [show]="showTeacherModal"
+    [teacher]="selectedTeacher"
+    (close)="closeTeacherModal()"
+    (contact)="contactTeacher($event)">
+  </app-teacher-profile-modal>
 </div>

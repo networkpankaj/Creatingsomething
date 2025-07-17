@@ -1,145 +1,125 @@
-/* Modern Sign-Up Component Styles */
+/* sign-up.component.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  height: 100%;
+  overflow: hidden;
+}
+
 .auth-container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
+  background: linear-gradient(135deg, #06141B 0%, #11212D 50%, #253745 100%);
   position: relative;
   overflow: hidden;
-  padding: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Background Effects */
-.auth-background {
+.auth-container::before {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 80%, rgba(204, 208, 207, 0.08) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(155, 168, 171, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(155, 168, 171, 0.2);
+  border-radius: 16px;
+  padding: 2rem;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(6, 20, 27, 0.15);
+  position: relative;
   z-index: 1;
 }
 
-.shape {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  filter: blur(40px);
-  animation: float 20s infinite linear;
+/* Custom scrollbar for the card */
+.auth-card::-webkit-scrollbar {
+  width: 4px;
 }
 
-.shape-1 {
-  width: 300px;
-  height: 300px;
-  top: -150px;
-  right: -150px;
-  animation-delay: 0s;
+.auth-card::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-.shape-2 {
-  width: 400px;
-  height: 400px;
-  bottom: -200px;
-  left: -200px;
-  animation-delay: -10s;
+.auth-card::-webkit-scrollbar-thumb {
+  background: rgba(37, 55, 69, 0.3);
+  border-radius: 2px;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(180deg);
-  }
-}
-
-/* Main Card */
-.auth-card {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 24px;
-  box-shadow: 
-    0 32px 64px rgba(0, 0, 0, 0.12),
-    0 16px 32px rgba(0, 0, 0, 0.08),
-    0 8px 16px rgba(0, 0, 0, 0.04);
-  width: 100%;
-  max-width: 900px;
-  padding: 40px;
-  position: relative;
-  z-index: 2;
-  margin: auto;
-}
-
-/* Header */
 .auth-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 2rem;
 }
 
 .brand-title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #06141B 0%, #253745 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin: 0 0 16px 0;
-  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
 }
 
 .auth-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1a202c;
-  margin: 0 0 8px 0;
-  letter-spacing: -0.025em;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #06141B;
+  margin-bottom: 0.3rem;
 }
 
 .auth-subtitle {
-  color: #718096;
-  font-size: 1rem;
-  margin: 0;
+  color: #4A5C6A;
+  font-size: 0.95rem;
+  line-height: 1.4;
   font-weight: 400;
 }
 
-/* Registration Options */
 .registration-links {
-  margin-top: 20px;
+  margin-bottom: 1.5rem;
 }
 
 .registration-options h3 {
   text-align: center;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 30px;
-  letter-spacing: -0.025em;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #11212D;
+  margin-bottom: 1.5rem;
 }
 
 .registration-cards {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 40px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
 }
 
 .registration-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 32px 24px;
-  border: 2px solid #e2e8f0;
-  border-radius: 20px;
-  text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: white;
+  background: #ffffff;
+  border: 1px solid rgba(155, 168, 171, 0.2);
+  border-radius: 12px;
+  padding: 1.8rem;
   text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .registration-card::before {
@@ -149,310 +129,476 @@
   left: 0;
   right: 0;
   bottom: 0;
+  background: linear-gradient(135deg, rgba(37, 55, 69, 0.02) 0%, rgba(74, 92, 106, 0.02) 100%);
   opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: 1;
+  transition: opacity 0.3s ease;
 }
 
-.parent-card::before {
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
-}
-
-.teacher-card::before {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(124, 58, 237, 0.08) 100%);
+.registration-card:hover {
+  border-color: #253745;
+  box-shadow: 0 8px 20px rgba(6, 20, 27, 0.12);
+  transform: translateY(-3px);
 }
 
 .registration-card:hover::before {
   opacity: 1;
 }
 
-.registration-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.1),
-    0 8px 16px rgba(0, 0, 0, 0.06);
-}
-
-.parent-card:hover {
-  border-color: #667eea;
-}
-
-.teacher-card:hover {
-  border-color: #8b5cf6;
-}
-
 .card-icon {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 2;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: block;
+  filter: drop-shadow(0 1px 3px rgba(6, 20, 27, 0.1));
 }
 
 .registration-card h4 {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  margin: 0 0 12px 0;
-  color: #1a202c;
+  color: #06141B;
+  margin-bottom: 0.8rem;
   position: relative;
-  z-index: 2;
-  letter-spacing: -0.025em;
+  z-index: 1;
 }
 
 .registration-card p {
-  font-size: 0.95rem;
-  color: #718096;
-  margin: 0 0 24px 0;
+  color: #4A5C6A;
+  font-size: 0.9rem;
   line-height: 1.5;
+  margin-bottom: 1.5rem;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
-.btn-register-parent,
-.btn-register-teacher {
-  padding: 14px 24px;
+.btn-register {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  background: linear-gradient(135deg, #11212D 0%, #253745 100%);
+  color: #ffffff;
   border: none;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   position: relative;
-  z-index: 2;
-  width: 100%;
-  letter-spacing: 0.025em;
-  text-transform: none;
+  z-index: 1;
+  box-shadow: 0 2px 8px rgba(6, 20, 27, 0.2);
 }
 
-.btn-register-parent {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+.btn-register:hover {
+  background: linear-gradient(135deg, #253745 0%, #4A5C6A 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 20, 27, 0.3);
 }
 
-.btn-register-parent:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
-}
-
-.btn-register-teacher {
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-}
-
-.btn-register-teacher:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
-}
-
-.btn-register-parent:active,
-.btn-register-teacher:active {
+.btn-register:active {
   transform: translateY(0);
 }
 
-/* Footer */
 .auth-footer {
   text-align: center;
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid #e2e8f0;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(155, 168, 171, 0.2);
 }
 
 .auth-footer p {
-  color: #718096;
-  font-size: 0.95rem;
-  margin: 0;
+  color: #4A5C6A;
+  font-size: 0.9rem;
+  font-weight: 400;
 }
 
 .link-button {
   background: none;
   border: none;
-  color: #667eea;
+  color: #11212D;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
-  padding: 0;
-  font-size: inherit;
+  position: relative;
 }
 
 .link-button:hover {
-  color: #764ba2;
+  color: #253745;
   text-decoration: underline;
 }
 
-/* Enhanced Responsive Design */
-@media (max-width: 768px) {
-  .auth-container {
-    padding: 16px;
+/* Form Row with Proper Spacing */
+.form-row.city-state-zip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem; /* Proper gap between fields */
+  margin-bottom: 1.5rem;
+}
+
+.city-group,
+.state-group,
+.zip-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* City Select Styling */
+.city-select {
+  border: 2px solid rgba(37, 55, 69, 0.3);
+  background: white;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.city-select:focus {
+  border-color: #253745;
+  box-shadow: 0 0 0 3px rgba(37, 55, 69, 0.1);
+}
+
+.city-select optgroup {
+  font-weight: 600;
+  color: #253745;
+  background: rgba(37, 55, 69, 0.05);
+  padding: 0.5rem 0;
+}
+
+.city-select option {
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: #06141B;
+}
+
+/* State Select Styling */
+.state-select {
+  border: 2px solid rgba(37, 55, 69, 0.3);
+  background: white;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.state-select:focus {
+  border-color: #253745;
+  box-shadow: 0 0 0 3px rgba(37, 55, 69, 0.1);
+}
+
+.state-select optgroup {
+  font-weight: 600;
+  color: #4A5C6A;
+  background: rgba(74, 92, 106, 0.05);
+  padding: 0.5rem 0;
+}
+
+.state-select option {
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+  color: #06141B;
+}
+
+/* PIN Code Input Styling */
+.pin-input {
+  border: 2px solid rgba(37, 55, 69, 0.3);
+  background: white;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.pin-input:focus {
+  border-color: #253745;
+  box-shadow: 0 0 0 3px rgba(37, 55, 69, 0.1);
+}
+
+.pin-input:valid {
+  border-color: #16a34a;
+}
+
+.pin-input:invalid:not(:placeholder-shown) {
+  border-color: #ef4444;
+}
+
+/* Form Hint for PIN */
+.zip-group .form-hint {
+  font-size: 0.75rem;
+  color: #4A5C6A;
+  margin-top: 0.25rem;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Custom City Input */
+.form-group input[name="customCity"] {
+  border: 2px solid rgba(155, 168, 171, 0.4);
+  background: rgba(255, 255, 255, 0.95);
+  animation: slideDown 0.3s ease;
+}
+
+.form-group input[name="customCity"]:focus {
+  border-color: #9BA8AB;
+  box-shadow: 0 0 0 3px rgba(155, 168, 171, 0.1);
+}
+
+/* Animation for custom city field */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .auth-card {
-    max-width: 100%;
-    padding: 32px 24px;
-  }
-  
-  .brand-title {
-    font-size: 1.75rem;
-  }
-  
-  .auth-title {
-    font-size: 1.5rem;
-  }
-  
-  .auth-subtitle {
-    font-size: 0.9rem;
-  }
-  
-  .registration-cards {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .registration-card {
-    padding: 28px 20px;
-  }
-  
-  .card-icon {
-    font-size: 2.5rem;
-    margin-bottom: 16px;
-  }
-  
-  .registration-card h4 {
-    font-size: 1.1rem;
-  }
-  
-  .registration-card p {
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-  }
-  
-  .btn-register-parent,
-  .btn-register-teacher {
-    padding: 12px 20px;
-    font-size: 0.9rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media (max-width: 480px) {
+/* Responsive Design */
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 0.5rem;
+  }
+  
   .auth-card {
-    padding: 24px 20px;
+    padding: 1.5rem;
+    max-height: 95vh;
   }
   
   .brand-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
   
   .auth-title {
     font-size: 1.3rem;
   }
   
-  .registration-options h3 {
-    font-size: 1.2rem;
-    margin-bottom: 24px;
+  .registration-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
   .registration-card {
-    padding: 24px 16px;
+    padding: 1.5rem;
   }
   
   .card-icon {
     font-size: 2.2rem;
   }
   
-  .registration-card h4 {
-    font-size: 1rem;
+  .form-row.city-state-zip {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   
-  .registration-card p {
-    font-size: 0.85rem;
+  .city-group,
+  .state-group,
+  .zip-group {
+    width: 100%;
   }
 }
 
-@media (max-width: 360px) {
-  .auth-container {
-    padding: 12px;
-  }
-  
+@media (max-width: 480px) {
   .auth-card {
-    padding: 20px 16px;
+    padding: 1.2rem;
+    border-radius: 12px;
   }
   
-  .registration-card {
-    padding: 20px 12px;
-  }
-}
-
-/* Loading and Interaction States */
-.registration-card:focus {
-  outline: 2px solid #667eea;
-  outline-offset: 2px;
-}
-
-.btn-register-parent:focus,
-.btn-register-teacher:focus {
-  outline: 2px solid rgba(255, 255, 255, 0.5);
-  outline-offset: 2px;
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .registration-card,
-  .btn-register-parent,
-  .btn-register-teacher,
-  .shape {
-    animation: none;
-    transition: none;
-  }
-  
-  .registration-card:hover {
-    transform: none;
-  }
-  
-  .btn-register-parent:hover,
-  .btn-register-teacher:hover {
-    transform: none;
-  }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .auth-card {
-    background: rgba(26, 32, 44, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+  .brand-title {
+    font-size: 1.6rem;
   }
   
   .auth-title {
-    color: white;
-  }
-  
-  .auth-subtitle {
-    color: #a0aec0;
-  }
-  
-  .registration-options h3 {
-    color: white;
+    font-size: 1.2rem;
   }
   
   .registration-card {
-    background: rgba(45, 55, 72, 0.8);
-    border-color: rgba(255, 255, 255, 0.1);
+    padding: 1.2rem;
+  }
+  
+  .btn-register {
+    padding: 0.8rem 1rem;
+    font-size: 0.85rem;
+  }
+  
+  .form-row.city-state-zip {
+    gap: 1.25rem;
+  }
+  
+  .city-select,
+  .state-select,
+  .pin-input {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+  
+  .pin-input {
+    text-align: left;
+    letter-spacing: 0.5px;
+  }
+}
+
+/* Enhanced Focus States */
+.city-select:focus,
+.state-select:focus {
+  outline: none;
+  border-color: #253745;
+  box-shadow: 0 0 0 3px rgba(37, 55, 69, 0.1);
+  background: rgba(255, 255, 255, 1);
+}
+
+/* Hover Effects */
+.city-select:hover:not(:focus),
+.state-select:hover:not(:focus),
+.pin-input:hover:not(:focus) {
+  border-color: rgba(37, 55, 69, 0.5);
+  background: rgba(255, 255, 255, 1);
+}
+
+/* Loading State for Dynamic Cities (if needed) */
+.city-select:disabled {
+  background: rgba(204, 208, 207, 0.1);
+  color: #9BA8AB;
+  cursor: not-allowed;
+}
+
+/* Success State */
+.city-select:valid,
+.state-select:valid {
+  border-color: rgba(22, 163, 74, 0.5);
+}
+
+/* Error State */
+.city-select:invalid:not(:focus):not([value=""]),
+.state-select:invalid:not(:focus):not([value=""]) {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Required Field Indicator */
+.form-label[for*="city"]::after,
+.form-label[for*="state"]::after,
+.form-label[for*="zipCode"]::after {
+  content: " *";
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Visual Feedback for Selection */
+.city-select option:checked,
+.state-select option:checked {
+  background: rgba(37, 55, 69, 0.1);
+  color: #253745;
+  font-weight: 600;
+}
+
+/* Focus states for accessibility */
+.registration-card:focus,
+.btn-register:focus,
+.link-button:focus {
+  outline: 2px solid #253745;
+  outline-offset: 2px;
+}
+
+/* Enhanced hover effects */
+.registration-card:hover .card-icon {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.registration-card:hover h4 {
+  color: #253745;
+  transition: color 0.3s ease;
+}
+
+/* Selection styles */
+::selection {
+  background: #253745;
+  color: #ffffff;
+}
+
+/* Remove default transitions from global selector */
+.registration-card,
+.btn-register,
+.link-button {
+  transition: all 0.3s ease;
+}
+
+/* Ensure proper height containment */
+@media (max-height: 600px) {
+  .auth-card {
+    max-height: 85vh;
+    padding: 1rem;
+  }
+  
+  .auth-header {
+    margin-bottom: 1rem;
+  }
+  
+  .brand-title {
+    font-size: 1.8rem;
+  }
+  
+  .auth-title {
+    font-size: 1.2rem;
+  }
+  
+  .registration-cards {
+    gap: 1rem;
+  }
+  
+  .registration-card {
+    padding: 1.2rem;
+  }
+}
+
+/* Compact mode for very small screens */
+@media (max-height: 500px) {
+  .auth-card {
+    max-height: 90vh;
+    padding: 0.8rem;
+  }
+  
+  .auth-header {
+    margin-bottom: 0.8rem;
+  }
+  
+  .brand-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .auth-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+  }
+  
+  .auth-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .registration-options h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .registration-card {
+    padding: 1rem;
+  }
+  
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
   }
   
   .registration-card h4 {
-    color: white;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
   }
   
   .registration-card p {
-    color: #a0aec0;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
   }
   
-  .auth-footer {
-    border-top-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .auth-footer p {
-    color: #a0aec0;
+  .btn-register {
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
   }
 }
